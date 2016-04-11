@@ -34,6 +34,10 @@ public class Main {
 				c.println("As you approach the left path, you see a faded sign.\nThe sign appears to be a skull and crossbones.");
 				c.println();
 				c.print("Take the path anyway? [yes/no] ");
+				decision = c.readString();
+				if (decision.equalsIgnoreCase("yes")) {
+					
+				}
 			}
 		} c.println("Game Over");
 	}
