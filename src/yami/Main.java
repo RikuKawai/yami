@@ -36,8 +36,35 @@ public class Main {
 				c.print("Take the path anyway? [yes/no] ");
 				decision = c.readString();
 				if (decision.equalsIgnoreCase("yes")) {
-					
-				}
+					int pass = (int)(Math.random() * 10) + 1;
+					if (pass >= 1 && pass <= 5) {
+						c.println("You fall into a deep hole, breaking your legs.\n Unable to escape, you die of starvation.");
+						alive = false;
+						break;
+					} else {}
+				} else if (decision.equalsIgnoreCase("no")) {
+					c.println("You take the right path instead.");
+				} else {}
+			} else if (decision.equalsIgnoreCase("right")) {}
+			area = 3;
+			c.println("After a short walk, you arrive in an open field.\n You see a small pond ahead, thirsty, you approach it.");
+			c.println();
+			c.print("Drink the water? [yes/no] ");
+			decision = c.readString();
+			if (decision.equalsIgnoreCase("yes")) { 
+				c.println("You drink the water and become infected with Cholera.\n Over the next few days, you slowly die of dehydration.");
+				alive = false;
+				break;
+			} else if (decision.equalsIgnoreCase("no")) {
+				c.println("You decide against drinking the water, as it may not be safe.");
+			} else {}
+			area = 4;
+			c.println("In the distance to the north, you see a blinking light alike to a cellular tower.\nYou also hear footsteps to the west.");
+			c.println();
+			c.print("Head [north], [west], or [wait]? ");
+			decision = c.readString();
+			if (decision.equalsIgnoreCase("north")) {
+				
 			}
 		} c.println("Game Over");
 	}
