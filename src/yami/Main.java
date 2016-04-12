@@ -102,7 +102,12 @@ public class Main {
 				c.print("Approach the hiker? [yes/no] ");
 				decision = c.readString();
 				if (decision.equalsIgnoreCase("yes")) {
-					
+					c.println();
+					c.println("As you approach the hiker, you realize it is tall and covered in fur.\n");
+					c.println("The Sasquatch sees you and charges, striking you with a powerful blow.\nEverything fades to black.\n");
+					c.println("You never wake up again.");
+					alive = false;
+					break;
 				} else if (decision.equalsIgnoreCase("no")) {
 					c.println();
 					c.println("You decide to head away from the figure.\n\nSomething shiny catches your eye");
@@ -115,8 +120,34 @@ public class Main {
 						alive = false;
 						win = true;
 						break;
+					} else if (decision.equalsIgnoreCase("no")) {
+						c.println();
+						c.println("You walk a little further and discover a shrine.\nThere is a sword set in stone, Bigfoot is looming behind you.");
+						c.println();
+						c.print("Do you [fight] or [flee]? ");
+						decision = c.readString();
+						if (decision.equalsIgnoreCase("fight")) {
+							c.println();
+							c.println("You draw the sword.\n");
+							c.println("Coming soon lol ;)");
+							alive = false;
+							break;
+						} else if (decision.equalsIgnoreCase("flee")) {
+							int pass = (int)(Math.random() * 10) + 1;
+							if (pass >= 1 && pass <= 5) {
+								c.println();
+								c.println("You are killed by Bigfoot.");
+								alive = false;
+								break;
+							} else {}
+							c.println();
+							c.println("You run without looking back and reach a small town.");
+							alive = false;
+							win = true;
+							break;
+						} else {}
 					}
-				}
+				} 
 			} else if (decision.equalsIgnoreCase("wait")) { //death
 				c.println();
 				c.println("You wait and eventually drift to sleep.");
