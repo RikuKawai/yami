@@ -96,7 +96,27 @@ public class Main {
 				win = true; //indicates that setting alive to false is a win and not a loss
 				break;
 			} else if (decision.equalsIgnoreCase("west")) { //bigfoot / rescue chopper path
-				
+				c.println();
+				c.println("You head to the west, in the distance you see an upright figure hiking through the forest.\nYour instinct says it's an animal but your reason says it's human.");
+				c.println();
+				c.print("Approach the hiker? [yes/no] ");
+				decision = c.readString();
+				if (decision.equalsIgnoreCase("yes")) {
+					
+				} else if (decision.equalsIgnoreCase("no")) {
+					c.println();
+					c.println("You decide to head away from the figure.\n\nSomething shiny catches your eye");
+					c.println();
+					c.print("Investigate the object? [yes/no] ");
+					decision = c.readString();
+					if (decision.equalsIgnoreCase("yes")) {
+						c.println();
+						c.println("You find a cell phone, the battery still has some charge in it.\nYou call 911 and head back to the field.\n\nSoon later, a rescue chopper picks you up.");
+						alive = false;
+						win = true;
+						break;
+					}
+				}
 			} else if (decision.equalsIgnoreCase("wait")) { //death
 				c.println();
 				c.println("You wait and eventually drift to sleep.");
@@ -109,8 +129,10 @@ public class Main {
 				break;
 			} else {}
 		} if (win == false) { //ended game via death
+			c.println();
 			c.println("Game Over");
 		} else if (win == true) { //ended game via survival
+			c.println();
 			c.println("You win!");
 		} else {}
 		c.println();
