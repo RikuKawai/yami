@@ -5,10 +5,10 @@ import hsa_new.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// TODO Finish combat engine
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 0.8a
+		// version 0.8b
 		// 2016/04/12
 		Console c = new Console(30,100,11,"yami"); //create console
 		
@@ -154,9 +154,46 @@ public class Main {
 						if (decision.equalsIgnoreCase("fight")) {
 							c.println();
 							c.println("You draw the sword.\n");
-							c.println("Coming soon lol ;)");
-							alive = false; //set alive to false
-							break; //break out of loop
+							boolean fighting = true;
+							boolean defend = false;
+							int playerHits = 0;
+							int bigfootHits = 0;
+							while (fighting == true) {
+								if (playerHits < 3) {
+									if (bigfootHits < 4) {
+										c.println("[Attack] or [defend]? ");
+										decision = c.readString();
+										if (decision.equalsIgnoreCase("attack")) {
+											int hit = (int)(Math.random() * 10) + 1;
+											if (hit >= 1 && hit <= 8) {
+												bigfootHits++;
+												defend = false;
+											} else {
+												defend = false;
+											}
+										} else if (decision.equalsIgnoreCase("defend")) {
+											defend = true;
+										} else { //kill the player if they input an invalid answer
+											c.println();
+											c.println("You spontaneously combust and die.");
+											alive = false;
+											break;
+										}
+									} else {
+										c.println("You defeat Bigfoot and reach a small town after a short walk.");
+										alive = false;
+										win = true;
+										fighting = false;
+										break;
+									}
+								} else {
+									c.println();
+									c.println("Bigfoot kills you.");
+									alive = false;
+									fighting = false;
+									break;
+								}
+							} break;
 						} else if (decision.equalsIgnoreCase("flee")) {
 							int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
 							if (pass >= 1 && pass <= 5) { //50% chance of triggering
