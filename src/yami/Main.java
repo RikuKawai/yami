@@ -8,9 +8,9 @@ public class Main {
 		// TODO [non critical] add delays
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.0
+		// version 1.0a
 		// 2016/04/13
-		boolean debug = true;
+		boolean debug = false; //set this to true to print debug information the system console
 		
 		Console c = new Console(30,100,11,"yami"); //create console
 		if (debug == true) {System.out.println("yami prototype version 1.0\n\nGame start!");} else {}
@@ -23,11 +23,19 @@ public class Main {
 			if (debug == true) {System.out.println("\nCAVE");} else {}
 			c.println("You awaken in what appears to be a cave, you are tired, hungry, and it's very dark.\nIn the distance you can see a faint light, behind you the cave heads deeper.");
 			c.println();
+			//try {Thread.sleep(500);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 			c.print("Head [deeper] or follow the [light]? ");
 			String decision = c.readString(); //read input
 			if (decision.equalsIgnoreCase("deeper")) { //die in cave
 				c.println();
-				c.println("You head deeper into the cave.\nSuddenly there is a loud crashing sound and you hear rocks falling.\nThe light is gone.\nTrapped in the cave, you slowly die of starvation.");
+				//try {Thread.sleep(500);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				c.println("You head deeper into the cave.\n");
+				//try {Thread.sleep(700);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				c.println("Suddenly there is a loud crashing sound and you hear rocks falling.\n");
+				//try {Thread.sleep(300);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				c.println("The light is gone.\n");
+				//try {Thread.sleep(900);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				c.println("Trapped in the cave, you slowly die of starvation.");
 				alive = false; //set alive to false
 				break; //break out of loop
 			} else if (decision.equalsIgnoreCase("light")) { //escape cave
@@ -290,9 +298,7 @@ public class Main {
 			} else if (decision.equalsIgnoreCase("wait")) { //death
 				c.println();
 				c.println("You wait and eventually drift to sleep.");
-				try {
-					Thread.sleep(2000);
-				} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				try {Thread.sleep(2000);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println();
 				c.println("You never wake up again.");
 				alive = false; //set alive to false
