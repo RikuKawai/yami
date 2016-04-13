@@ -5,11 +5,11 @@ import hsa_new.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Finish combat engine
+		// TODO Debug combat engine
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 0.8b
-		// 2016/04/12
+		// version 0.9a
+		// 2016/04/13
 		Console c = new Console(30,100,11,"yami"); //create console
 		
 		//define environment variables
@@ -112,8 +112,8 @@ public class Main {
 				} else { //kill the player if they input an invalid answer
 					c.println();
 					c.println("You spontaneously combust and die.");
-					alive = false;
-					break;
+					alive = false; //set alive to false
+					break; //break out of loop
 				}
 				c.println();
 				c.println("You reach a small clearing in the forest.\nYou realize you have walked on to an occupied camp site.\nThe campers feed and shelter you before they take you back to civilization.");
@@ -154,47 +154,75 @@ public class Main {
 						if (decision.equalsIgnoreCase("fight")) {
 							c.println();
 							c.println("You draw the sword.\n");
+							//define environment variables for combat engine
 							boolean fighting = true;
 							boolean defend = false;
 							int playerHits = 0;
 							int bigfootHits = 0;
-							while (fighting == true) {
-								if (playerHits < 3) {
-									if (bigfootHits < 4) {
+							while (fighting == true) { //begin combat loop
+								if (playerHits < 3) { //check player health
+									if (bigfootHits < 4) { //check bigfoot health
 										c.println("[Attack] or [defend]? ");
-										decision = c.readString();
-										if (decision.equalsIgnoreCase("attack")) {
-											int hit = (int)(Math.random() * 10) + 1;
-											if (hit >= 1 && hit <= 8) {
-												bigfootHits++;
-												defend = false;
-											} else {
-												defend = false;
+										decision = c.readString(); //read input
+										if (decision.equalsIgnoreCase("attack")) { //attack bigfoot
+											c.println();
+											c.println("You attack Bigfoot!");
+											int hit = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
+											if (hit >= 1 && hit <= 8) { //80% hit ratio
+												c.println();
+												c.println("Your attack hits Bigfoot!");
+												bigfootHits++; //increase bigfoot's sustained hits
+												defend = false; //indicate that the player is not defending
+											} else { //player attack misses
+												c.println();
+												c.println("You attack misses Bigfoot!");
+												defend = false; //indicate that the player is not defending
 											}
-										} else if (decision.equalsIgnoreCase("defend")) {
-											defend = true;
+										} else if (decision.equalsIgnoreCase("defend")) { //defend from bigfoot's attack
+											c.println();
+											c.println("You stand in defense.");
+											defend = true; //indicate that the player is defending
 										} else { //kill the player if they input an invalid answer
 											c.println();
 											c.println("You spontaneously combust and die.");
-											alive = false;
-											break;
+											alive = false; //set alive to false
+											break; //break out of loop
 										}
-									} else {
+										c.println();
+										c.println("Bigfoot attacks!");
+										int hit = (int)(Math.random() * 10) + 1; //generate a random number between 1 and 10
+										if (hit >= 1 && hit <= 4) { //40% chance to miss
+											c.println();
+											c.println("Bigfoot's attack misses you!");
+										} else { //60% chance to hit
+											if (defend == true) { //triggers if the player chose to defend
+												int block = (int)(Math.random() * 10) + 1; //generate a random number between 1 and 10
+												if (block >= 1 && block <= 9) { //90% block ratio
+													c.println();
+													c.println("Bigfoot's attack is blocked!");
+												} else {} //continue if block fails
+											} else { //bigfoot hits the player
+												c.println();
+												c.println("Bigfoot's attack strikes you!");
+												playerHits++; //increase player's sustained hits
+											}
+										}
+									} else { //triggers if bigfoot's hits reach 4
 										c.println("You defeat Bigfoot and reach a small town after a short walk.");
-										alive = false;
-										win = true;
-										fighting = false;
-										break;
+										alive = false; //set alive to false to exit main loop
+										win = true; //indicate that the player survived
+										fighting = false; //set fighting to false to exit combat loop
+										break; //break out of combat loop
 									}
-								} else {
+								} else { //triggers if player's hits reach 3
 									c.println();
 									c.println("Bigfoot kills you.");
-									alive = false;
-									fighting = false;
-									break;
+									alive = false; //set alive to false to exit main loop
+									fighting = false; //set fighting to false to exit combat loop
+									break; //break out of combat loop
 								}
-							} break;
-						} else if (decision.equalsIgnoreCase("flee")) {
+							} break; //break out of main loop
+						} else if (decision.equalsIgnoreCase("flee")) { //player chooses to flee
 							int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
 							if (pass >= 1 && pass <= 5) { //50% chance of triggering
 								c.println();
@@ -211,20 +239,20 @@ public class Main {
 						} else { //kill the player if they input an invalid answer
 							c.println();
 							c.println("You spontaneously combust and die.");
-							alive = false;
-							break;
+							alive = false; //set alive to false
+							break; //break out of loop
 						}
 					} else { //kill the player if they input an invalid answer
 						c.println();
 						c.println("You spontaneously combust and die.");
-						alive = false;
-						break;
+						alive = false; //set alive to false
+						break; //break out of loop
 					}
 				} else { //kill the player if they input an invalid answer
 					c.println();
 					c.println("You spontaneously combust and die.");
-					alive = false;
-					break;
+					alive = false; //set alive to false
+					break; //break out of loop
 				}
 			} else if (decision.equalsIgnoreCase("wait")) { //death
 				c.println();
@@ -248,7 +276,7 @@ public class Main {
 		} else if (win == true) { //ended game via survival
 			c.println();
 			c.println("You win!");
-		} else {}
+		} else {} //win is always true or false
 		c.println();
 		c.println("Thank you for playing yami");
 		//end of program
