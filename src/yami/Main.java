@@ -13,7 +13,7 @@ public class Main {
 		boolean debug = false; //set this to true to print debug information the system console
 		
 		Console c = new Console(30,100,11,"yami"); //create console
-		if (debug == true) {System.out.println("yami prototype version 1.0\n\nGame start!");} else {}
+		if (debug == true) {System.out.println("yami prototype version 1.0a\n\nGame start!");} else {}
 		//define environment variables
 		boolean alive = true; 
 		boolean win = false;
