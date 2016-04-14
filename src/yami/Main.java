@@ -4,16 +4,16 @@ import hsa_new.*;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO [non critical] add delays
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.0a
-		// 2016/04/13
+		// version 1.0b
+		// 2016/04/14
 		boolean debug = false; //set this to true to print debug information the system console
 		
 		Console c = new Console(30,100,11,"yami"); //create console
-		if (debug == true) {System.out.println("yami prototype version 1.0a\n\nGame start!");} else {}
+		if (debug == true) {System.out.println("yami prototype version 1.0b\n\nGame start!");} else {}
 		//define environment variables
 		boolean alive = true; 
 		boolean win = false;
@@ -23,21 +23,17 @@ public class Main {
 			if (debug == true) {System.out.println("\nCAVE");} else {}
 			c.println("You awaken in what appears to be a cave, you are tired, hungry, and it's very dark.\nIn the distance you can see a faint light, behind you the cave heads deeper.");
 			c.println();
-			//try {Thread.sleep(500);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+			Thread.sleep(650);
 			c.print("Head [deeper] or follow the [light]? ");
 			String decision = c.readString(); //read input
 			if (decision.equalsIgnoreCase("deeper")) { //die in cave
 				c.println();
-				//try {Thread.sleep(500);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println("You head deeper into the cave.\n");
-				//try {Thread.sleep(700);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println("Suddenly there is a loud crashing sound and you hear rocks falling.\n");
-				//try {Thread.sleep(300);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println("The light is gone.\n");
-				//try {Thread.sleep(900);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println("Trapped in the cave, you slowly die of starvation.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			} else if (decision.equalsIgnoreCase("light")) { //escape cave
 				if (debug == true) {System.out.println("\nCAVE_MOUTH");} else {}
 				c.println();
@@ -45,8 +41,8 @@ public class Main {
 			} else { //kill the player if they input an invalid answer
 				c.println();
 				c.println("You spontaneously combust and die.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			}
 			c.println("You press on after leaving the cave.\nAhead, there is a fork in the path.");
 			c.println();
@@ -64,8 +60,8 @@ public class Main {
 					if (pass >= 1 && pass <= 5) { //50% chance of triggering
 						c.println();
 						c.println("You fall into a deep hole, breaking your legs.\nUnable to escape, you die of starvation.");
-						alive = false; //set alive to false
-						break; //break out of loop
+						alive = false; 
+						break; 
 					} else {} //continue successfully
 				} else if (decision.equalsIgnoreCase("no")) { //take the safe path
 					c.println();
@@ -73,8 +69,8 @@ public class Main {
 				} else { //kill the player if they input an invalid answer
 					c.println();
 					c.println("You spontaneously combust and die.");
-					alive = false; //set alive to false
-					break; //break out of loop
+					alive = false; 
+					break; 
 				}
 			} else if (decision.equalsIgnoreCase("right")) {} //take the safe path
 			if (debug == true) {System.out.println("\nOPEN_FIELD_POND");} else {}
@@ -86,16 +82,16 @@ public class Main {
 			if (decision.equalsIgnoreCase("yes")) {  //die of cholera
 				c.println();
 				c.println("You drink the water and become infected with Cholera.\nOver the next few days, you slowly die of dehydration.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			} else if (decision.equalsIgnoreCase("no")) { //don't drink the water
 				c.println();
 				c.println("You decide against drinking the water, as it may not be safe.");
 			} else { //kill the player if they input an invalid answer
 				c.println();
 				c.println("You spontaneously combust and die.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			}
 			if (debug == true) {System.out.println("\nOPEN_FIELD_JUNCTION");} else {}
 			c.println();
@@ -122,21 +118,21 @@ public class Main {
 						c.println("You suddenly black out from hunger.");
 						c.println();
 						c.println("You die of starvation.");
-						alive = false; //set alive to false
-						break; //break out of loop
+						alive = false; 
+						break; 
 					} else {} //continue successfully
 				} else { //kill the player if they input an invalid answer
 					c.println();
 					c.println("You spontaneously combust and die.");
-					alive = false; //set alive to false
-					break; //break out of loop
+					alive = false; 
+					break; 
 				}
 				if (debug == true) {System.out.println("\nCAMP_SITE_CLEARING");} else {}
 				c.println();
 				c.println("You reach a small clearing in the forest.\nYou realize you have walked on to an occupied camp site.\nThe campers feed and shelter you before they take you back to civilization.");
 				alive = false; //in this case alive is used even though you didn't die
 				win = true; //indicates that setting alive to false is a win and not a loss
-				break; //break out of loop
+				break; 
 			} else if (decision.equalsIgnoreCase("west")) { //bigfoot / rescue chopper path
 				if (debug == true) {System.out.println("\nWEST_TRAIL_HIKER");} else {}
 				c.println();
@@ -149,8 +145,8 @@ public class Main {
 					c.println("As you approach the hiker, you realize it is tall and covered in fur.\n");
 					c.println("The Sasquatch sees you and charges, striking you with a powerful blow.\nEverything fades to black.\n");
 					c.println("You never wake up again.");
-					alive = false; //set alive to false
-					break; //break out of loop
+					alive = false; 
+					break; 
 				} else if (decision.equalsIgnoreCase("no")) { //bigfoot / rescue chopper path
 					if (debug == true) {System.out.println("\nWEST_TRAIL_PHONE");} else {}
 					c.println();
@@ -163,7 +159,7 @@ public class Main {
 						c.println("You find a cell phone, the battery still has some charge in it.\nYou call 911 and head back to the field.\n\nSoon later, a rescue chopper picks you up.");
 						alive = false; //alive is used to end the game
 						win = true; //win indicates that the game ended in survival and not death
-						break; //break out of loop
+						break; 
 					} else if (decision.equalsIgnoreCase("no")) {
 						if (debug == true) {System.out.println("\nSHRINE");} else {}
 						c.println();
@@ -214,8 +210,8 @@ public class Main {
 										} else { //kill the player if they input an invalid answer
 											c.println();
 											c.println("You spontaneously combust and die.");
-											alive = false; //set alive to false
-											break; //break out of loop
+											alive = false; 
+											break; 
 										}
 										if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
 										c.println();
@@ -267,33 +263,33 @@ public class Main {
 							if (pass >= 1 && pass <= 5) { //50% chance of triggering
 								c.println();
 								c.println("You are killed by Bigfoot.");
-								alive = false; //set alive to false
-								break; //break out of loop
+								alive = false; 
+								break; 
 							} else { //continue successfully
 								if (debug == true) {System.out.println("\nSMALL_TOWN");} else {}
 								c.println();
 								c.println("You run without looking back and reach a small town.");
 								alive = false; //set alive to false to end the game
 								win = true; //indicate that the player survived
-								break; //break out of loop
+								break; 
 							}
 						} else { //kill the player if they input an invalid answer
 							c.println();
 							c.println("You spontaneously combust and die.");
-							alive = false; //set alive to false
-							break; //break out of loop
+							alive = false; 
+							break; 
 						}
 					} else { //kill the player if they input an invalid answer
 						c.println();
 						c.println("You spontaneously combust and die.");
-						alive = false; //set alive to false
-						break; //break out of loop
+						alive = false; 
+						break; 
 					}
 				} else { //kill the player if they input an invalid answer
 					c.println();
 					c.println("You spontaneously combust and die.");
-					alive = false; //set alive to false
-					break; //break out of loop
+					alive = false; 
+					break; 
 				}
 			} else if (decision.equalsIgnoreCase("wait")) { //death
 				c.println();
@@ -301,13 +297,13 @@ public class Main {
 				try {Thread.sleep(2000);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
 				c.println();
 				c.println("You never wake up again.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			} else { //kill the player if they input an invalid answer
 				c.println();
 				c.println("You spontaneously combust and die.");
-				alive = false; //set alive to false
-				break; //break out of loop
+				alive = false; 
+				break; 
 			}
 		} if (win == false) { //ended game via death
 			if (debug == true) {System.out.println("\nGAME_LOST");} else {}
