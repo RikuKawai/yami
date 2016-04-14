@@ -5,15 +5,16 @@ import hsa_new.*;
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
-		// TODO [non critical] add delays
+		// TODO make it even prettier; debug combat
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.0b
+		// version 1.1
 		// 2016/04/14
 		boolean debug = false; //set this to true to print debug information the system console
+		final String VERSION = "1.1"; //set version code
 		
 		Console c = new Console(30,100,11,"yami"); //create console
-		if (debug == true) {System.out.println("yami prototype version 1.0b\n\nGame start!");} else {}
+		if (debug == true) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");} else {} //lines like this print debug info when debug = true
 		//define environment variables
 		boolean alive = true; 
 		boolean win = false;
@@ -27,151 +28,212 @@ public class Main {
 			c.print("Head [deeper] or follow the [light]? ");
 			String decision = c.readString(); //read input
 			if (decision.equalsIgnoreCase("deeper")) { //die in cave
-				c.println();
-				c.println("You head deeper into the cave.\n");
-				c.println("Suddenly there is a loud crashing sound and you hear rocks falling.\n");
-				c.println("The light is gone.\n");
+				c.clear();
+				c.println("You head deeper into the cave.");
+				Thread.sleep(1000);
+				c.println("Suddenly there is a loud crashing sound and you hear rocks falling.");
+				Thread.sleep(1200);
+				c.println("The light is gone.");
+				Thread.sleep(1500);
 				c.println("Trapped in the cave, you slowly die of starvation.");
 				alive = false; 
 				break; 
 			} else if (decision.equalsIgnoreCase("light")) { //escape cave
 				if (debug == true) {System.out.println("\nCAVE_MOUTH");} else {}
-				c.println();
-				c.println("You head towards the light and come to the mouth of the cave.\nSoon after you exit, rocks fall and close the entrance behind you.");
+				c.clear();
+				c.println("You head towards the light and come to the mouth of the cave.");
+				Thread.sleep(800);
+				c.println("Soon after you exit, rocks fall and close the entrance behind you.");
 			} else { //kill the player if they input an invalid answer
-				c.println();
+				c.clear();
 				c.println("You spontaneously combust and die.");
 				alive = false; 
 				break; 
 			}
-			c.println("You press on after leaving the cave.\nAhead, there is a fork in the path.");
+			c.println("\nYou press on after leaving the cave.");
+			Thread.sleep(900);
+			c.println("Ahead, there is a fork in the path.");
+			Thread.sleep(650);
 			c.println();
 			c.print("Take the [left] path or the [right] path? ");
 			decision = c.readString(); 
 			if (decision.equalsIgnoreCase("left")) { //risky path
 				if (debug == true) {System.out.println("\nLEFT_PATH_HEAD");} else {}
+				c.clear();
+				c.println("As you approach the left path, you see a faded sign.");
+				Thread.sleep(850);
+				c.println("The sign appears to be a skull and crossbones.");
 				c.println();
-				c.println("As you approach the left path, you see a faded sign.\nThe sign appears to be a skull and crossbones.");
-				c.println();
+				Thread.sleep(650);
 				c.print("Take the path anyway? [yes/no] ");
 				decision = c.readString(); //read input
 				if (decision.equalsIgnoreCase("yes")) { //risk death
 					int pass = (int)(Math.random() * 10) + 1; //random number from 1 to 10
 					if (pass >= 1 && pass <= 5) { //50% chance of triggering
-						c.println();
-						c.println("You fall into a deep hole, breaking your legs.\nUnable to escape, you die of starvation.");
+						c.clear();
+						Thread.sleep(1200);
+						c.println("You fall into a deep hole, breaking your legs.");
+						Thread.sleep(1500);
+						c.println("Unable to escape, you die of starvation.");
 						alive = false; 
 						break; 
 					} else {} //continue successfully
 				} else if (decision.equalsIgnoreCase("no")) { //take the safe path
-					c.println();
+					c.clear();
 					c.println("You take the right path instead.");
 				} else { //kill the player if they input an invalid answer
-					c.println();
+					c.clear();
 					c.println("You spontaneously combust and die.");
 					alive = false; 
 					break; 
 				}
 			} else if (decision.equalsIgnoreCase("right")) {} //take the safe path
 			if (debug == true) {System.out.println("\nOPEN_FIELD_POND");} else {}
+			c.clear();
+			c.println("After a short walk, you arrive in an open field.");
+			Thread.sleep(800);
+			c.println("You see a small pond ahead, thirsty, you approach it.");
 			c.println();
-			c.println("After a short walk, you arrive in an open field.\nYou see a small pond ahead, thirsty, you approach it.");
-			c.println();
+			Thread.sleep(650);
 			c.print("Drink the water? [yes/no] "); //risk death for thirst
 			decision = c.readString();
 			if (decision.equalsIgnoreCase("yes")) {  //die of cholera
-				c.println();
-				c.println("You drink the water and become infected with Cholera.\nOver the next few days, you slowly die of dehydration.");
+				c.clear();
+				Thread.sleep(1000);
+				c.println("You drink the water and become infected with Cholera.");
+				Thread.sleep(1500);
+				c.println("Over the next few days, you slowly die of dehydration.");
 				alive = false; 
 				break; 
 			} else if (decision.equalsIgnoreCase("no")) { //don't drink the water
-				c.println();
+				c.clear();
 				c.println("You decide against drinking the water, as it may not be safe.");
 			} else { //kill the player if they input an invalid answer
-				c.println();
+				c.clear();
 				c.println("You spontaneously combust and die.");
 				alive = false; 
 				break; 
 			}
 			if (debug == true) {System.out.println("\nOPEN_FIELD_JUNCTION");} else {}
 			c.println();
-			c.println("In the distance to the north, you see a blinking light alike to a cellular tower.\nYou also hear footsteps to the west.");
+			Thread.sleep(800);
+			c.println("In the distance to the north, you see a blinking light alike to a cellular tower.");
+			Thread.sleep(750);
+			c.println("You also hear footsteps to the west.");
 			c.println();
+			Thread.sleep(650);
 			c.print("Head [north], [west], or [wait]? ");
 			decision = c.readString(); //read input
 			if (decision.equalsIgnoreCase("north")) { //camp site path
 				if (debug == true) {System.out.println("\nNORTHERN_TRAIL");} else {}
+				c.clear();
+				c.println("You head north and find a lightly used trail.");
+				Thread.sleep(900);
+				c.println("Along the trail you find a wild blueberry bush.");
 				c.println();
-				c.println("You head north and find a lightly used trail.\nAlong the trail you find a wild blueberry bush.");
-				c.println();
+				Thread.sleep(650);
 				c.print("Eat the berries? [yes/no] ");
 				decision = c.readString(); //read input
 				if (decision.equalsIgnoreCase("yes")) { //survive
-					c.println();
-					c.println("You eat some berries.\nYour stomach stops aching and you can think more clearly.\nThe juicy berries also quench your thirst.");
+					c.clear();
+					c.println("You eat some berries.");
+					Thread.sleep(700);
+					c.println("Your stomach stops aching and you can think more clearly.");
+					Thread.sleep(700);
+					c.println("The juicy berries also quench your thirst.");
 				} else if (decision.equalsIgnoreCase("no")) { //most likely die
-					c.println();
-					c.println("You decide against eating the berries.\nYou press on to the north, thoughts clouded by hunger.");
+					c.clear();
+					c.println("You decide against eating the berries.");
+					Thread.sleep(800);
+					c.println("You press on to the north, thoughts clouded by hunger.");
+					Thread.sleep(1200);
 					int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
 					if (pass >= 1 && pass <= 7) { //70% chance of triggering
-						c.println();
+						c.clear();
 						c.println("You suddenly black out from hunger.");
 						c.println();
+						Thread.sleep(1500);
 						c.println("You die of starvation.");
 						alive = false; 
 						break; 
 					} else {} //continue successfully
 				} else { //kill the player if they input an invalid answer
-					c.println();
+					c.clear();
 					c.println("You spontaneously combust and die.");
 					alive = false; 
 					break; 
 				}
 				if (debug == true) {System.out.println("\nCAMP_SITE_CLEARING");} else {}
 				c.println();
-				c.println("You reach a small clearing in the forest.\nYou realize you have walked on to an occupied camp site.\nThe campers feed and shelter you before they take you back to civilization.");
+				Thread.sleep(1000);
+				c.println("You reach a small clearing in the forest.");
+				Thread.sleep(900);
+				c.println("You realize you have walked on to an occupied camp site.");
+				Thread.sleep(1200);
+				c.println("The campers feed and shelter you before they take you back to civilization.");
 				alive = false; //in this case alive is used even though you didn't die
 				win = true; //indicates that setting alive to false is a win and not a loss
 				break; 
 			} else if (decision.equalsIgnoreCase("west")) { //bigfoot / rescue chopper path
 				if (debug == true) {System.out.println("\nWEST_TRAIL_HIKER");} else {}
+				c.clear();
+				c.println("You head to the west, in the distance you see an upright figure hiking through the forest.");
+				Thread.sleep(1000);
+				c.println("Your instinct says it's an animal but your reason says it's human.");
 				c.println();
-				c.println("You head to the west, in the distance you see an upright figure hiking through the forest.\nYour instinct says it's an animal but your reason says it's human.");
-				c.println();
+				Thread.sleep(650);
 				c.print("Approach the hiker? [yes/no] ");
 				decision = c.readString(); //read input
 				if (decision.equalsIgnoreCase("yes")) { //killed by bigfoot
-					c.println();
-					c.println("As you approach the hiker, you realize it is tall and covered in fur.\n");
-					c.println("The Sasquatch sees you and charges, striking you with a powerful blow.\nEverything fades to black.\n");
+					c.clear();
+					c.println("As you approach the hiker, you realize it is tall and covered in fur.");
+					Thread.sleep(1000);
+					c.println("The Sasquatch sees you and charges, striking you with a powerful blow.");
+					Thread.sleep(1200);
+					c.println("Everything fades to black.");
+					Thread.sleep(1500);
 					c.println("You never wake up again.");
 					alive = false; 
 					break; 
 				} else if (decision.equalsIgnoreCase("no")) { //bigfoot / rescue chopper path
 					if (debug == true) {System.out.println("\nWEST_TRAIL_PHONE");} else {}
+					c.clear();
+					c.println("You decide to head away from the figure.");
+					Thread.sleep(900);
+					c.println("\nSomething shiny catches your eye!");
 					c.println();
-					c.println("You decide to head away from the figure.\n\nSomething shiny catches your eye");
-					c.println();
+					Thread.sleep(650);
 					c.print("Investigate the object? [yes/no] ");
 					decision = c.readString(); //read input
 					if (decision.equalsIgnoreCase("yes")) {
-						c.println();
-						c.println("You find a cell phone, the battery still has some charge in it.\nYou call 911 and head back to the field.\n\nSoon later, a rescue chopper picks you up.");
+						c.clear();
+						c.println("You find a cell phone, the battery still has some charge in it.");
+						Thread.sleep(800);
+						c.println("You call 911 and head back to the field.");
+						Thread.sleep(1000);
+						c.println("\nSoon later, a rescue chopper picks you up.");
 						alive = false; //alive is used to end the game
 						win = true; //win indicates that the game ended in survival and not death
 						break; 
 					} else if (decision.equalsIgnoreCase("no")) {
 						if (debug == true) {System.out.println("\nSHRINE");} else {}
+						c.clear();
+						c.println("You walk a little further and discover a shrine.");
+						Thread.sleep(800);
+						c.println("There is a sword set in stone.");
+						Thread.sleep(1200);
+						c.println("Bigfoot is looming behind you.");
 						c.println();
-						c.println("You walk a little further and discover a shrine.\nThere is a sword set in stone, Bigfoot is looming behind you.");
-						c.println();
+						Thread.sleep(650);
 						c.print("Do you [fight] or [flee]? ");
 						decision = c.readString(); //read input
 						if (decision.equalsIgnoreCase("fight")) {
-							c.println();
+							c.clear();
 							c.println("You draw the sword.\n");
-							//define environment variables for combat engine
+							Thread.sleep(1800);
+							
 							if (debug == true) {System.out.println("\nyami basic combat engine version 0.3\n\nCombat start!");} else {}
+							//define environment variables for combat engine
 							boolean fighting = true;
 							boolean defend = false;
 							int playerHits = 0;
@@ -181,47 +243,57 @@ public class Main {
 									if (debug == true) {System.out.println("\n" + playerHits + " PLAYER_HITS");} else {}
 									if (bigfootHits < 4) { //check bigfoot health
 										if (debug == true) {System.out.println("\n" + bigfootHits + " BIGFOOT_HITS");} else {}
+										c.clear();
 										c.println("[Attack] or [defend]? ");
 										if (debug == true) {System.out.println("\nWaiting for input...");} else {}
 										decision = c.readString(); //read input
 										if (decision.equalsIgnoreCase("attack")) { //attack bigfoot
 											if (debug == true) {System.out.println("\nCOMBAT_ATTACK");} else {}
-											c.println();
+											c.clear();
+											Thread.sleep(700);
 											c.println("You attack Bigfoot!");
 											int hit = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
 											if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_VALUE");} else {}
 											if (hit >= 1 && hit <= 8) { //80% hit ratio
 												if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
 												c.println();
+												Thread.sleep(800);
 												c.println("Your attack hits Bigfoot!");
+												Thread.sleep(1000);
 												bigfootHits++; //increase bigfoot's sustained hits
 												defend = false; //indicate that the player is not defending
 											} else { //player attack misses
 												if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
 												c.println();
+												Thread.sleep(800);
 												c.println("You attack misses Bigfoot!");
+												Thread.sleep(1000);
 												defend = false; //indicate that the player is not defending
 											}
 										} else if (decision.equalsIgnoreCase("defend")) { //defend from bigfoot's attack
 											if (debug == true) {System.out.println("\nCOMBAT_DEFEND");} else {}
-											c.println();
+											c.clear();
+											Thread.sleep(700);
 											c.println("You stand in defense.");
 											defend = true; //indicate that the player is defending
 										} else { //kill the player if they input an invalid answer
-											c.println();
+											c.clear();
 											c.println("You spontaneously combust and die.");
 											alive = false; 
 											break; 
 										}
 										if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-										c.println();
+										c.clear();
+										Thread.sleep(700);
 										c.println("Bigfoot attacks!");
 										int hit = (int)(Math.random() * 10) + 1; //generate a random number between 1 and 10
 										if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
 										if (hit >= 1 && hit <= 4) { //40% chance to miss
 											if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
 											c.println();
+											Thread.sleep(800);
 											c.println("Bigfoot's attack misses you!");
+											Thread.sleep(1000);
 										} else { //60% chance to hit
 											if (defend == true) { //triggers if the player chose to defend
 												if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
@@ -230,19 +302,25 @@ public class Main {
 												if (block >= 1 && block <= 9) { //90% block ratio
 													if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
 													c.println();
+													Thread.sleep(800);
 													c.println("Bigfoot's attack is blocked!");
+													Thread.sleep(1000);
 												} else {
 													if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
 												} //continue if block fails
 											} else { //bigfoot hits the player
 												if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
 												c.println();
+												Thread.sleep(800);
 												c.println("Bigfoot's attack strikes you!");
+												Thread.sleep(1000);
 												playerHits++; //increase player's sustained hits
 											}
 										}
 									} else { //triggers if bigfoot's hits reach 4
 										if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
+										Thread.sleep(500);
+										c.clear();
 										c.println("You defeat Bigfoot and reach a small town after a short walk.");
 										alive = false; //set alive to false to exit main loop
 										win = true; //indicate that the player survived
@@ -251,7 +329,8 @@ public class Main {
 									}
 								} else { //triggers if player's hits reach 3
 									if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
-									c.println();
+									Thread.sleep(500);
+									c.clear();
 									c.println("Bigfoot kills you.");
 									alive = false; //set alive to false to exit main loop
 									fighting = false; //set fighting to false to exit combat loop
@@ -261,46 +340,48 @@ public class Main {
 						} else if (decision.equalsIgnoreCase("flee")) { //player chooses to flee
 							int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
 							if (pass >= 1 && pass <= 5) { //50% chance of triggering
-								c.println();
-								c.println("You are killed by Bigfoot.");
+								c.clear();
+								Thread.sleep(1400);
+								c.println("Bigfoot catches up and strikes you down.");
 								alive = false; 
 								break; 
 							} else { //continue successfully
 								if (debug == true) {System.out.println("\nSMALL_TOWN");} else {}
-								c.println();
+								c.clear();
+								Thread.sleep(1000);
 								c.println("You run without looking back and reach a small town.");
 								alive = false; //set alive to false to end the game
 								win = true; //indicate that the player survived
 								break; 
 							}
 						} else { //kill the player if they input an invalid answer
-							c.println();
+							c.clear();
 							c.println("You spontaneously combust and die.");
 							alive = false; 
 							break; 
 						}
 					} else { //kill the player if they input an invalid answer
-						c.println();
+						c.clear();
 						c.println("You spontaneously combust and die.");
 						alive = false; 
 						break; 
 					}
 				} else { //kill the player if they input an invalid answer
-					c.println();
+					c.clear();
 					c.println("You spontaneously combust and die.");
 					alive = false; 
 					break; 
 				}
 			} else if (decision.equalsIgnoreCase("wait")) { //death
-				c.println();
+				c.clear();
 				c.println("You wait and eventually drift to sleep.");
-				try {Thread.sleep(2000);} catch(InterruptedException ie){System.err.println("Sleep interrupted");}
+				Thread.sleep(2000);
 				c.println();
 				c.println("You never wake up again.");
 				alive = false; 
 				break; 
 			} else { //kill the player if they input an invalid answer
-				c.println();
+				c.clear();
 				c.println("You spontaneously combust and die.");
 				alive = false; 
 				break; 
@@ -308,13 +389,16 @@ public class Main {
 		} if (win == false) { //ended game via death
 			if (debug == true) {System.out.println("\nGAME_LOST");} else {}
 			c.println();
+			Thread.sleep(800);
 			c.println("Game Over");
 		} else if (win == true) { //ended game via survival
 			if (debug == true) {System.out.println("\nGAME_WON");} else {}
 			c.println();
+			Thread.sleep(800);
 			c.println("You win!");
 		} else {} //win is always true or false
 		c.println();
+		Thread.sleep(1000);
 		c.println("Thank you for playing yami");
 		if (debug == true) {System.out.println("\nEnd of program");} else {}
 		//end of program
