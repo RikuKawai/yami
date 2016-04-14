@@ -5,13 +5,13 @@ import hsa_new.*;
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
-		// TODO make it even prettier; debug combat
+		// TODO [optional] make combat even prettier
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.1
+		// version 1.2
 		// 2016/04/14
 		boolean debug = false; //set this to true to print debug information the system console
-		final String VERSION = "1.1"; //set version code
+		final String VERSION = "1.2"; //set version code
 		
 		Console c = new Console(30,100,11,"yami"); //create console
 		if (debug == true) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");} else {} //lines like this print debug info when debug = true
@@ -44,6 +44,7 @@ public class Main {
 				c.println("You head towards the light and come to the mouth of the cave.");
 				Thread.sleep(800);
 				c.println("Soon after you exit, rocks fall and close the entrance behind you.");
+				Thread.sleep(700);
 			} else { //kill the player if they input an invalid answer
 				c.clear();
 				c.println("You spontaneously combust and die.");
@@ -232,49 +233,80 @@ public class Main {
 							c.println("You draw the sword.\n");
 							Thread.sleep(1800);
 							
-							if (debug == true) {System.out.println("\nyami basic combat engine version 0.3\n\nCombat start!");} else {}
+							// yami basic combat engine
+							// @author Quinlan McNellen
+							// version 1.0
+							
+							//uncomment the next line if using the combat engine outside of yami
+							//boolean debug = false;
+							if (debug == true) {System.out.println("\nyami basic combat engine version 1.0\n\nCombat start!");} else {}
 							//define environment variables for combat engine
 							boolean fighting = true;
 							boolean defend = false;
-							int playerHits = 0;
-							int bigfootHits = 0;
+							//player variables
+							int playerHealth = 100;
+							int playerHitRatio = 80;
+							int playerBlockRatio = 90;
+							int playerCritRatio = 10;
+							int playerDamage = 10;
+							//enemy variables
+							int enemyHealth = 150;
+							int enemyHitRatio = 60;
+							int enemyDamage = 5;
+							//configurable strings
+							String enemyName = "Bigfoot";
+							String winMessage = " and reach a small town after a short walk.";
+							
 							while (fighting == true) { //begin combat loop
-								if (playerHits < 3) { //check player health
-									if (debug == true) {System.out.println("\n" + playerHits + " PLAYER_HITS");} else {}
-									if (bigfootHits < 4) { //check bigfoot health
-										if (debug == true) {System.out.println("\n" + bigfootHits + " BIGFOOT_HITS");} else {}
+								if (playerHealth > 0) { //check player health
+									if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HITS");} else {}
+									if (enemyHealth > 0) { //check enemy health
+										if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HITS");} else {}
 										c.clear();
-										c.println("[Attack] or [defend]? ");
+										c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
+										c.print("[Attack] or [defend]? ");
 										if (debug == true) {System.out.println("\nWaiting for input...");} else {}
 										decision = c.readString(); //read input
-										if (decision.equalsIgnoreCase("attack")) { //attack bigfoot
+										if (decision.equalsIgnoreCase("attack")) { //attack enemy
 											if (debug == true) {System.out.println("\nCOMBAT_ATTACK");} else {}
 											c.clear();
 											Thread.sleep(700);
-											c.println("You attack Bigfoot!");
-											int hit = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
-											if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_VALUE");} else {}
-											if (hit >= 1 && hit <= 8) { //80% hit ratio
+											c.println("You attack " + enemyName + "!");
+											int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
+											if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} else {}
+											if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
 												if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
 												c.println();
+												int crit = (int)(Math.random() * 100) + 1;
 												Thread.sleep(800);
-												c.println("Your attack hits Bigfoot!");
-												Thread.sleep(1000);
-												bigfootHits++; //increase bigfoot's sustained hits
+												c.println("Your attack hits " + enemyName + "!");
+												Thread.sleep(200);
+												if (crit >= 1 && crit <= playerCritRatio) {
+													c.println("\nA critical hit!");
+													enemyHealth = enemyHealth - (playerDamage * 2);
+													Thread.sleep(200);
+													c.println("\n" + (playerDamage * 2) + " DMG");
+												} else {
+													enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
+													Thread.sleep(200);
+													c.println("\n" + playerDamage + " DMG");
+												}
+												Thread.sleep(600);
 												defend = false; //indicate that the player is not defending
 											} else { //player attack misses
 												if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
 												c.println();
 												Thread.sleep(800);
-												c.println("You attack misses Bigfoot!");
+												c.println("You attack misses " + enemyName + "!");
 												Thread.sleep(1000);
 												defend = false; //indicate that the player is not defending
 											}
-										} else if (decision.equalsIgnoreCase("defend")) { //defend from bigfoot's attack
+										} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
 											if (debug == true) {System.out.println("\nCOMBAT_DEFEND");} else {}
 											c.clear();
 											Thread.sleep(700);
 											c.println("You stand in defense.");
+											Thread.sleep(1000);
 											defend = true; //indicate that the player is defending
 										} else { //kill the player if they input an invalid answer
 											c.clear();
@@ -282,56 +314,60 @@ public class Main {
 											alive = false; 
 											break; 
 										}
-										if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-										c.clear();
-										Thread.sleep(700);
-										c.println("Bigfoot attacks!");
-										int hit = (int)(Math.random() * 10) + 1; //generate a random number between 1 and 10
-										if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
-										if (hit >= 1 && hit <= 4) { //40% chance to miss
-											if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
-											c.println();
-											Thread.sleep(800);
-											c.println("Bigfoot's attack misses you!");
-											Thread.sleep(1000);
-										} else { //60% chance to hit
-											if (defend == true) { //triggers if the player chose to defend
-												if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
-												int block = (int)(Math.random() * 10) + 1; //generate a random number between 1 and 10
-												if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
-												if (block >= 1 && block <= 9) { //90% block ratio
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+										if (enemyHealth > 0) {
+											if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
+											c.clear();
+											Thread.sleep(700);
+											c.println(enemyName + " attacks!");
+											int hit = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
+											if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
+											if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
+												if (defend == true) { //triggers if the player chose to defend
+													if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
+													int block = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
+													if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
+														if (block >= 1 && block <= playerBlockRatio) { //calculate block
+															if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+															c.println();
+															Thread.sleep(800);
+															c.println(enemyName + "'s attack is blocked!");
+															Thread.sleep(1000);
+														} else {
+															if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
+														} //continue if block fails
+												} else { //enemy hits the player
+													if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
 													c.println();
 													Thread.sleep(800);
-													c.println("Bigfoot's attack is blocked!");
-													Thread.sleep(1000);
-												} else {
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
-												} //continue if block fails
-											} else { //bigfoot hits the player
-												if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
+													c.println(enemyName + "'s attack strikes you!");
+													Thread.sleep(200);
+													c.println("\n" + enemyDamage + " DMG");
+													Thread.sleep(800);
+													playerHealth = playerHealth - enemyDamage; //decreases player health by enemy's attack strength
+												}
+											} else { //attack misses
+												if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
 												c.println();
 												Thread.sleep(800);
-												c.println("Bigfoot's attack strikes you!");
+												c.println(enemyName + "'s attack misses you!");
 												Thread.sleep(1000);
-												playerHits++; //increase player's sustained hits
 											}
-										}
-									} else { //triggers if bigfoot's hits reach 4
+										} else {}
+									} else { //triggers when enemy health reaches 0
 										if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
 										Thread.sleep(500);
 										c.clear();
-										c.println("You defeat Bigfoot and reach a small town after a short walk.");
+										c.println("You defeat " + enemyName + winMessage);
 										alive = false; //set alive to false to exit main loop
 										win = true; //indicate that the player survived
 										fighting = false; //set fighting to false to exit combat loop
 										break; //break out of combat loop
 									}
-								} else { //triggers if player's hits reach 3
+								} else { //triggers if player's health reaches 0
 									if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
 									Thread.sleep(500);
 									c.clear();
-									c.println("Bigfoot kills you.");
+									c.println(enemyName + " kills you.");
 									alive = false; //set alive to false to exit main loop
 									fighting = false; //set fighting to false to exit combat loop
 									break; //break out of combat loop
