@@ -10,7 +10,7 @@ public class Main {
 		// @author Quinlan McNellen
 		// version 1.2.1
 		// 2016/04/15
-		boolean debug = false; //set this to true to print debug information the system console
+		boolean debug = true; //set this to true to print debug information the system console
 		final String VERSION = "1.2.1"; //set version code
 		
 		Console c = new Console(30,100,11,"yami 1.2.1"); //create console
@@ -238,11 +238,11 @@ public class Main {
 								
 								// yami basic combat engine
 								// @author Quinlan McNellen
-								// version 1.0
+								// version 1.1
 								
 								//uncomment the next line if using the combat engine outside of yami
 								//boolean debug = false;
-								if (debug == true) {System.out.println("\nyami basic combat engine version 1.0\n\nCombat start!");} else {}
+								if (debug == true) {System.out.println("\nyami basic combat engine version 1.1\n\nCombat start!");} else {}
 								//define environment variables for combat engine
 								boolean fighting = true;
 								boolean defend = false;
@@ -260,11 +260,13 @@ public class Main {
 								String enemyName = "Bigfoot";
 								String winMessage = " and reach a small town after a short walk.";
 								
+								if (debug == true) {System.out.println("\nToday you will be fighting " + enemyName);} else {}
+								
 								while (fighting == true) { //begin combat loop
 									if (playerHealth > 0) { //check player health
-										if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HITS");} else {}
+										if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HP");} else {}
 										if (enemyHealth > 0) { //check enemy health
-											if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HITS");} else {}
+											if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} else {}
 											c.clear();
 											c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
 											c.print("[Attack] or [defend]? ");
@@ -281,18 +283,22 @@ public class Main {
 													if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
 													c.println();
 													int crit = (int)(Math.random() * 100) + 1;
+													if (debug == true) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} else {}
 													Thread.sleep(800);
 													c.println("Your attack hits " + enemyName + "!");
 													Thread.sleep(200);
 													if (crit >= 1 && crit <= playerCritRatio) {
 														c.println("\nA critical hit!");
+														if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
 														enemyHealth = enemyHealth - (playerDamage * 2);
 														Thread.sleep(200);
 														c.println("\n" + (playerDamage * 2) + " DMG");
+														if (debug == true) {System.out.println("\n" + (playerDamage * 2) + " DMG");} else {}
 													} else {
 														enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
 														Thread.sleep(200);
 														c.println("\n" + playerDamage + " DMG");
+														if (debug == true) {System.out.println("\n" + playerDamage + " DMG");} else {}
 													}
 													Thread.sleep(600);
 													defend = false; //indicate that the player is not defending
@@ -345,6 +351,7 @@ public class Main {
 														c.println(enemyName + "'s attack strikes you!");
 														Thread.sleep(200);
 														c.println("\n" + enemyDamage + " DMG");
+														if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
 														Thread.sleep(800);
 														playerHealth = playerHealth - enemyDamage; //decreases player health by enemy's attack strength
 													}
@@ -439,10 +446,15 @@ public class Main {
 			c.println();
 			c.print("Play again? [yes/no] ");
 			decision = c.readString();
-			if (decision.equalsIgnoreCase("yes")) {Thread.sleep(650);}
+			if (decision.equalsIgnoreCase("yes")) {
+				alive = true;
+				win = false;
+				c.clear();
+			}
 			else if (decision.equalsIgnoreCase("no")) {
 				Thread.sleep(1000);
 				c.println("Thank you for playing yami");
+				playing = false;
 				break;
 			} else {
 				c.clear();
@@ -456,6 +468,8 @@ public class Main {
 				c.println("\nYou died at the game over screen");
 				Thread.sleep(1200);
 				c.println("\ngit gud and launch the gaem agin skrub");
+				playing = false;
+				break;
 			}
 		} if (debug == true) {System.out.println("\nEnd of program");} else {} //end of program
 	}
