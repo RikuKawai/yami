@@ -250,14 +250,14 @@ public class Main {
 								//player variables
 								int playerHealth = 100;
 								int playerHitRatio = 80;
-								int playerBlockRatio = 90;
-								int playerCritRatio = 10;
+								int playerBlockRatio = 80;
+								int playerCritRatio = 12;
 								int playerDamage = 10;
 								//enemy variables
 								int enemyHealth = 150;
-								int enemyHitRatio = 60;
+								int enemyHitRatio = 65;
 								int enemyBlockRatio = 15;
-								int enemyCritRatio = 5;
+								int enemyCritRatio = 8;
 								int enemyDamage = 5;
 								//configurable strings
 								String enemyName = "Bigfoot";
