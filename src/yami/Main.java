@@ -8,10 +8,10 @@ public class Main {
 		// TODO [optional] make combat even prettier; improve ambusher fight ending; make combat a method
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.3
-		// 2016/04/18
+		// version 1.4
+		// 2016/04/19
 		boolean debug = true; //set this to true to print debug information the system console
-		final String VERSION = "1.3"; //set version code
+		final String VERSION = "1.4"; //set version code
 		
 		Console c = new Console(30,100,11,"yami " + VERSION); //create console
 		if (debug == true) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");} else {} //lines like this print debug info when debug = true
@@ -34,13 +34,193 @@ public class Main {
 					c.clear();
 					c.println("You head deeper into the cave.");
 					Thread.sleep(1000);
-					c.println("Suddenly there is a loud crashing sound and you hear rocks falling.");
+					c.println("\nSuddenly there is a loud crashing sound and you hear rocks falling.");
 					Thread.sleep(1200);
-					c.println("The light is gone.");
+					c.println("\nThe light is gone.");
 					Thread.sleep(1500);
-					c.println("Trapped in the cave, you slowly die of starvation.");
-					alive = false; 
-					break; 
+					c.println("\nSuddenly there is fire all around you!");
+					Thread.sleep(900);
+					c.println("\nYou look up and see a mighty dragon!");
+					Thread.sleep(900);
+					c.println("\nYou grab a sword laying nearby...");
+					Thread.sleep(1200);
+					c.println("\n...this is no ordinary sword");
+					Thread.sleep(1400);
+					c.println("\nInfused with Excalibur's might, you engage the dragon.");
+					Thread.sleep(1800);
+					
+					// yami basic combat engine
+					// @author Quinlan McNellen
+					// version 2.0
+					
+					//uncomment the next line if using the combat engine outside of yami
+					//boolean debug = false;
+					if (debug == true) {System.out.println("\nyami basic combat engine version 2.0\n\nCombat start!");} else {}
+					//define environment variables for combat engine
+					boolean fighting = true;
+					boolean defend = false;
+					int criticalMultiplier = 5;
+					//player variables
+					int playerHealth = 300000;
+					int playerHitRatio = 90;
+					int playerBlockRatio = 30;
+					int playerCritRatio = 45;
+					int playerDamage = 5000;
+					//enemy variables
+					int enemyHealth = 320000;
+					int enemyHitRatio = 80;
+					int enemyBlockRatio = 10;
+					int enemyCritRatio = 20;
+					int enemyDamage = 6000;
+					//configurable strings
+					String enemyName = "Dragon";
+					String winMessage = " and take your rightful place as the legendary hero.";
+					
+					if (debug == true) {System.out.println("\nToday you will be fighting " + enemyName);} else {}
+					
+					while (fighting == true) { //begin combat loop
+						if (playerHealth > 0) { //check player health
+							if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HP");} else {}
+							if (enemyHealth > 0) { //check enemy health
+								if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} else {}
+								c.clear();
+								c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
+								c.print("[Attack] or [defend]? ");
+								if (debug == true) {System.out.println("\nWaiting for input...");} else {}
+								decision = c.readString(); //read input
+								if (decision.equalsIgnoreCase("attack")) { //attack enemy
+									if (debug == true) {System.out.println("\nPLAYER_ATTACK");} else {}
+									c.clear();
+									Thread.sleep(700);
+									c.println("You attack " + enemyName + "!");
+									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
+									if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} else {}
+									if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
+										int block = (int)(Math.random() * 100) + 1;
+										if (debug == true) {System.out.println("\n" + block + " ENEMY_BLOCK_CHANCE");} else {}
+										if (block >= 1 && block <= enemyBlockRatio) {
+											if (debug == true) {System.out.println("\nENEMY_BLOCK");} else {}
+											c.println();
+											Thread.sleep(800);
+											c.println("Your attack is blocked!");
+											Thread.sleep(1000);
+										} else {
+											if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
+											c.println();
+											int crit = (int)(Math.random() * 100) + 1;
+											if (debug == true) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} else {}
+											Thread.sleep(800);
+											c.println("Your attack hits " + enemyName + "!");
+											Thread.sleep(200);
+											if (crit >= 1 && crit <= playerCritRatio) {
+												c.println("\nA critical hit!");
+												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
+												enemyHealth = enemyHealth - (playerDamage * criticalMultiplier);
+												Thread.sleep(200);
+												c.println("\n" + (playerDamage * criticalMultiplier) + " DMG");
+												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
+											} else {
+												enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
+												Thread.sleep(200);
+												c.println("\n" + playerDamage + " DMG");
+												if (debug == true) {System.out.println("\n" + playerDamage + " DMG");} else {}
+											}
+											Thread.sleep(600);
+											defend = false; //indicate that the player is not defending
+										}
+									} else { //player attack misses
+										if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
+										c.println();
+										Thread.sleep(800);
+										c.println("Your attack misses " + enemyName + "!");
+										Thread.sleep(1000);
+										defend = false; //indicate that the player is not defending
+									}
+								} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
+									if (debug == true) {System.out.println("\nPLAYER_DEFEND");} else {}
+									c.clear();
+									Thread.sleep(700);
+									c.println("You stand in defense.");
+									Thread.sleep(1000);
+									defend = true; //indicate that the player is defending
+								} else { //kill the player if they input an invalid answer
+									c.clear();
+									c.println("You spontaneously combust and die.");
+									alive = false; 
+									break; 
+								}
+								if (enemyHealth > 0) {
+									if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
+									c.clear();
+									Thread.sleep(700);
+									c.println(enemyName + " attacks!");
+									int hit = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
+									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
+									if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
+										if (defend == true) { //triggers if the player chose to defend
+											if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
+											int block = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
+											if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
+												if (block >= 1 && block <= playerBlockRatio) { //calculate block
+													if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+													c.println();
+													Thread.sleep(800);
+													c.println(enemyName + "'s attack is blocked!");
+													Thread.sleep(1000);
+												} else {
+													if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
+												} //continue if block fails
+										} else { //enemy hits the player
+											if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
+											c.println();
+											int crit = (int)(Math.random() * 100) + 1;
+											if (debug == true) {System.out.println("\n" + crit + " ENEMY_CRIT_CHANCE");} else {}
+											Thread.sleep(800);
+											c.println(enemyName + "'s attack strikes you!");
+											Thread.sleep(200);
+											if (crit >= 1 && crit <= enemyCritRatio) {
+												c.println("\nA critical hit!");
+												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
+												playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
+												Thread.sleep(200);
+												c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
+												if (debug == true) {System.out.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");} else {}
+											} else {
+												playerHealth = playerHealth - enemyDamage; //decrease player's health by enemy's attack strength
+												Thread.sleep(200);
+												c.println("\n" + enemyDamage + " DMG");
+												if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
+											}
+											Thread.sleep(600);
+										}
+									} else { //attack misses
+										if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
+										c.println();
+										Thread.sleep(800);
+										c.println(enemyName + "'s attack misses you!");
+										Thread.sleep(1000);
+									}
+								}else {}
+							} else { //triggers when enemy health reaches 0
+								if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
+								Thread.sleep(500);
+								c.clear();
+								c.println("You defeat " + enemyName + winMessage);
+								alive = false; //set alive to false to exit main loop
+								win = true; //indicate that the player survived
+								fighting = false; //set fighting to false to exit combat loop
+								break; //break out of combat loop
+							}
+						} else { //triggers if player's health reaches 0
+							if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
+							Thread.sleep(500);
+							c.clear();
+							c.println(enemyName + " kills you.");
+							alive = false; //set alive to false to exit main loop
+							fighting = false; //set fighting to false to exit combat loop
+							break; //break out of combat loop
+						}
+					} break; //break out of main loop
 				} else if (decision.equalsIgnoreCase("light")) { //escape cave
 					if (debug == true) {System.out.println("\nCAVE_MOUTH");} else {}
 					c.clear();
