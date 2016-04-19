@@ -8,10 +8,10 @@ public class Main {
 		// TODO [optional] make combat even prettier; improve ambusher fight ending; make combat a method
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.4
+		// version 1.4.1
 		// 2016/04/19
 		boolean debug = true; //set this to true to print debug information the system console
-		final String VERSION = "1.4"; //set version code
+		final String VERSION = "1.4.1"; //set version code
 		
 		Console c = new Console(30,100,11,"yami " + VERSION); //create console
 		if (debug == true) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");} else {} //lines like this print debug info when debug = true
@@ -51,11 +51,11 @@ public class Main {
 					
 					// yami basic combat engine
 					// @author Quinlan McNellen
-					// version 2.0
+					// version 2.1
 					
 					//uncomment the next line if using the combat engine outside of yami
 					//boolean debug = false;
-					if (debug == true) {System.out.println("\nyami basic combat engine version 2.0\n\nCombat start!");} else {}
+					if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
 					//define environment variables for combat engine
 					boolean fighting = true;
 					boolean defend = false;
@@ -151,26 +151,18 @@ public class Main {
 								}
 								if (enemyHealth > 0) {
 									if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println(enemyName + " attacks!");
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
+									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
+									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
 									if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-										if (defend == true) { //triggers if the player chose to defend
-											if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
-											int block = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-											if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
-												if (block >= 1 && block <= playerBlockRatio) { //calculate block
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-													c.println();
-													Thread.sleep(800);
-													c.println(enemyName + "'s attack is blocked!");
-													Thread.sleep(1000);
-												} else {
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
-												} //continue if block fails
-										} else { //enemy hits the player
+										int block = (int)(Math.random() * 100) + 1;
+										if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
+										if (block >= 1 && block <= playerBlockRatio && defend == true) {
+											if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+											c.println();
+											Thread.sleep(800);
+											c.println("You block the attack!");
+											Thread.sleep(1000);
+										} else {
 											if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
 											c.println();
 											int crit = (int)(Math.random() * 100) + 1;
@@ -184,20 +176,20 @@ public class Main {
 												playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
 												Thread.sleep(200);
 												c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");} else {}
+												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
 											} else {
-												playerHealth = playerHealth - enemyDamage; //decrease player's health by enemy's attack strength
+												playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
 												Thread.sleep(200);
 												c.println("\n" + enemyDamage + " DMG");
 												if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
 											}
 											Thread.sleep(600);
 										}
-									} else { //attack misses
+									} else { //enemy attack misses
 										if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
 										c.println();
 										Thread.sleep(800);
-										c.println(enemyName + "'s attack misses you!");
+										c.println("The attack misses!");
 										Thread.sleep(1000);
 									}
 								}else {}
@@ -420,11 +412,11 @@ public class Main {
 								
 								// yami basic combat engine
 								// @author Quinlan McNellen
-								// version 2.0
+								// version 2.1
 								
 								//uncomment the next line if using the combat engine outside of yami
 								//boolean debug = false;
-								if (debug == true) {System.out.println("\nyami basic combat engine version 2.0\n\nCombat start!");} else {}
+								if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
 								//define environment variables for combat engine
 								boolean fighting = true;
 								boolean defend = false;
@@ -520,26 +512,18 @@ public class Main {
 											}
 											if (enemyHealth > 0) {
 												if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-												c.clear();
-												Thread.sleep(700);
-												c.println(enemyName + " attacks!");
-												int hit = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-												if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
+												int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
+												if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
 												if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-													if (defend == true) { //triggers if the player chose to defend
-														if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
-														int block = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-														if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
-															if (block >= 1 && block <= playerBlockRatio) { //calculate block
-																if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-																c.println();
-																Thread.sleep(800);
-																c.println(enemyName + "'s attack is blocked!");
-																Thread.sleep(1000);
-															} else {
-																if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
-															} //continue if block fails
-													} else { //enemy hits the player
+													int block = (int)(Math.random() * 100) + 1;
+													if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
+													if (block >= 1 && block <= playerBlockRatio && defend == true) {
+														if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+														c.println();
+														Thread.sleep(800);
+														c.println("You block the attack!");
+														Thread.sleep(1000);
+													} else {
 														if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
 														c.println();
 														int crit = (int)(Math.random() * 100) + 1;
@@ -553,20 +537,20 @@ public class Main {
 															playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
 															Thread.sleep(200);
 															c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-															if (debug == true) {System.out.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");} else {}
+															if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
 														} else {
-															playerHealth = playerHealth - enemyDamage; //decrease player's health by enemy's attack strength
+															playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
 															Thread.sleep(200);
 															c.println("\n" + enemyDamage + " DMG");
 															if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
 														}
 														Thread.sleep(600);
 													}
-												} else { //attack misses
+												} else { //enemy attack misses
 													if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
 													c.println();
 													Thread.sleep(800);
-													c.println(enemyName + "'s attack misses you!");
+													c.println("The attack misses!");
 													Thread.sleep(1000);
 												}
 											}else {}
@@ -644,11 +628,11 @@ public class Main {
 					
 					// yami basic combat engine
 					// @author Quinlan McNellen
-					// version 2.0
+					// version 2.1
 					
 					//uncomment the next line if using the combat engine outside of yami
 					//boolean debug = false;
-					if (debug == true) {System.out.println("\nyami basic combat engine version 2.0\n\nCombat start!");} else {}
+					if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
 					//define environment variables for combat engine
 					boolean fighting = true;
 					boolean defend = false;
@@ -744,26 +728,18 @@ public class Main {
 								}
 								if (enemyHealth > 0) {
 									if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println(enemyName + " attacks!");
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_VALUE");} else {}
+									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
+									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
 									if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-										if (defend == true) { //triggers if the player chose to defend
-											if (debug == true) {System.out.println("\nPLAYER_DEFENDING");} else {}
-											int block = (int)(Math.random() * 100) + 1; //generate a random number between 1 and 100
-											if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_VALUE");} else {}
-												if (block >= 1 && block <= playerBlockRatio) { //calculate block
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-													c.println();
-													Thread.sleep(800);
-													c.println(enemyName + "'s attack is blocked!");
-													Thread.sleep(1000);
-												} else {
-													if (debug == true) {System.out.println("\nPLAYER_BLOCK_FAIL");} else {}
-												} //continue if block fails
-										} else { //enemy hits the player
+										int block = (int)(Math.random() * 100) + 1;
+										if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
+										if (block >= 1 && block <= playerBlockRatio && defend == true) {
+											if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
+											c.println();
+											Thread.sleep(800);
+											c.println("You block the attack!");
+											Thread.sleep(1000);
+										} else {
 											if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
 											c.println();
 											int crit = (int)(Math.random() * 100) + 1;
@@ -777,20 +753,20 @@ public class Main {
 												playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
 												Thread.sleep(200);
 												c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");} else {}
+												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
 											} else {
-												playerHealth = playerHealth - enemyDamage; //decrease player's health by enemy's attack strength
+												playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
 												Thread.sleep(200);
 												c.println("\n" + enemyDamage + " DMG");
 												if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
 											}
 											Thread.sleep(600);
 										}
-									} else { //attack misses
+									} else { //enemy attack misses
 										if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
 										c.println();
 										Thread.sleep(800);
-										c.println(enemyName + "'s attack misses you!");
+										c.println("The attack misses!");
 										Thread.sleep(1000);
 									}
 								}else {}
