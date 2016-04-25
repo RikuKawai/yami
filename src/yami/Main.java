@@ -4,809 +4,279 @@ import hsa_new.*;
 
 public class Main {
 
-	public static void main(String[] args) throws InterruptedException {
-		// TODO [optional] make combat even prettier; improve ambusher fight ending; make combat a method
+	public static boolean alive = true;
+	public static boolean win = false;
+	public static boolean debug = true; //set this to true to print debug information the system console
+	public static String decision;
+	
+	public static final String VERSION = "1.4.2"; //set version code
+	public static Console c = new Console(30,100,11,"yami " + VERSION); //create console
+	
+	public static void main(String[] args) {
+		// TODO [optional] make combat even prettier
 		// yami prototype
 		// @author Quinlan McNellen
-		// version 1.4.1
-		// 2016/04/19
-		boolean debug = true; //set this to true to print debug information the system console
-		final String VERSION = "1.4.1"; //set version code
+		// version 1.4.2
+		// 2016/04/24
+
+		if (debug) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");}//lines like this print debug info when debug = true
 		
-		Console c = new Console(30,100,11,"yami " + VERSION); //create console
-		if (debug == true) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");} else {} //lines like this print debug info when debug = true
-		//define environment variables
-		boolean alive = true; 
-		boolean win = false;
 		boolean playing = true;
-		String decision;
 		
-		while (playing == true) {
+		while (playing) {
 			//begin game loop environment
-			while (alive == true) {
-				if (debug == true) {System.out.println("\nCAVE");} else {}
+			while (alive) {
+				if (debug) {System.out.println("\nCAVE");} 
 				c.println("You awaken in what appears to be a cave, you are tired, hungry, and it's very dark.\nIn the distance you can see a faint light, behind you the cave heads deeper.");
 				c.println();
-				Thread.sleep(650);
+				s(650);
 				c.print("Head [deeper] or follow the [light]? ");
 				decision = c.readString(); //read input
 				if (decision.equalsIgnoreCase("deeper")) { //die in cave
 					c.clear();
 					c.println("You head deeper into the cave.");
-					Thread.sleep(1000);
+					s(1000);
 					c.println("\nSuddenly there is a loud crashing sound and you hear rocks falling.");
-					Thread.sleep(1200);
+					s(1200);
 					c.println("\nThe light is gone.");
-					Thread.sleep(1500);
+					s(1500);
 					c.println("\nSuddenly there is fire all around you!");
-					Thread.sleep(900);
+					s(900);
 					c.println("\nYou look up and see a mighty dragon!");
-					Thread.sleep(900);
+					s(900);
 					c.println("\nYou grab a sword laying nearby...");
-					Thread.sleep(1200);
+					s(1200);
 					c.println("\n...this is no ordinary sword");
-					Thread.sleep(1400);
+					s(1400);
 					c.println("\nInfused with Excalibur's might, you engage the dragon.");
-					Thread.sleep(1800);
-					
-					// yami basic combat engine
-					// @author Quinlan McNellen
-					// version 2.1
-					
-					//uncomment the next line if using the combat engine outside of yami
-					//boolean debug = false;
-					if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
-					//define environment variables for combat engine
-					boolean fighting = true;
-					boolean defend = false;
-					int criticalMultiplier = 5;
-					//player variables
-					int playerHealth = 300000;
-					int playerHitRatio = 90;
-					int playerBlockRatio = 30;
-					int playerCritRatio = 45;
-					int playerDamage = 5000;
-					//enemy variables
-					int enemyHealth = 320000;
-					int enemyHitRatio = 80;
-					int enemyBlockRatio = 10;
-					int enemyCritRatio = 20;
-					int enemyDamage = 6000;
-					//configurable strings
-					String enemyName = "Dragon";
-					String winMessage = " and take your rightful place as the legendary hero.";
-					
-					if (debug == true) {System.out.println("\nToday you will be fighting " + enemyName);} else {}
-					
-					while (fighting == true) { //begin combat loop
-						if (playerHealth > 0) { //check player health
-							if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HP");} else {}
-							if (enemyHealth > 0) { //check enemy health
-								if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} else {}
-								c.clear();
-								c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
-								c.print("[Attack] or [defend]? ");
-								if (debug == true) {System.out.println("\nWaiting for input...");} else {}
-								decision = c.readString(); //read input
-								if (decision.equalsIgnoreCase("attack")) { //attack enemy
-									if (debug == true) {System.out.println("\nPLAYER_ATTACK");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println("You attack " + enemyName + "!");
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-									if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} else {}
-									if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
-										int block = (int)(Math.random() * 100) + 1;
-										if (debug == true) {System.out.println("\n" + block + " ENEMY_BLOCK_CHANCE");} else {}
-										if (block >= 1 && block <= enemyBlockRatio) {
-											if (debug == true) {System.out.println("\nENEMY_BLOCK");} else {}
-											c.println();
-											Thread.sleep(800);
-											c.println("Your attack is blocked!");
-											Thread.sleep(1000);
-										} else {
-											if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
-											c.println();
-											int crit = (int)(Math.random() * 100) + 1;
-											if (debug == true) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} else {}
-											Thread.sleep(800);
-											c.println("Your attack hits " + enemyName + "!");
-											Thread.sleep(200);
-											if (crit >= 1 && crit <= playerCritRatio) {
-												c.println("\nA critical hit!");
-												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-												enemyHealth = enemyHealth - (playerDamage * criticalMultiplier);
-												Thread.sleep(200);
-												c.println("\n" + (playerDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-											} else {
-												enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
-												Thread.sleep(200);
-												c.println("\n" + playerDamage + " DMG");
-												if (debug == true) {System.out.println("\n" + playerDamage + " DMG");} else {}
-											}
-											Thread.sleep(600);
-											defend = false; //indicate that the player is not defending
-										}
-									} else { //player attack misses
-										if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
-										c.println();
-										Thread.sleep(800);
-										c.println("Your attack misses " + enemyName + "!");
-										Thread.sleep(1000);
-										defend = false; //indicate that the player is not defending
-									}
-								} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
-									if (debug == true) {System.out.println("\nPLAYER_DEFEND");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println("You stand in defense.");
-									Thread.sleep(1000);
-									defend = true; //indicate that the player is defending
-								} else { //kill the player if they input an invalid answer
-									c.clear();
-									c.println("You spontaneously combust and die.");
-									alive = false; 
-									break; 
-								}
-								if (enemyHealth > 0) {
-									if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
-									if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-										int block = (int)(Math.random() * 100) + 1;
-										if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
-										if (block >= 1 && block <= playerBlockRatio && defend == true) {
-											if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-											c.println();
-											Thread.sleep(800);
-											c.println("You block the attack!");
-											Thread.sleep(1000);
-										} else {
-											if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
-											c.println();
-											int crit = (int)(Math.random() * 100) + 1;
-											if (debug == true) {System.out.println("\n" + crit + " ENEMY_CRIT_CHANCE");} else {}
-											Thread.sleep(800);
-											c.println(enemyName + "'s attack strikes you!");
-											Thread.sleep(200);
-											if (crit >= 1 && crit <= enemyCritRatio) {
-												c.println("\nA critical hit!");
-												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-												playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
-												Thread.sleep(200);
-												c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-											} else {
-												playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
-												Thread.sleep(200);
-												c.println("\n" + enemyDamage + " DMG");
-												if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
-											}
-											Thread.sleep(600);
-										}
-									} else { //enemy attack misses
-										if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
-										c.println();
-										Thread.sleep(800);
-										c.println("The attack misses!");
-										Thread.sleep(1000);
-									}
-								}else {}
-							} else { //triggers when enemy health reaches 0
-								if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
-								Thread.sleep(500);
-								c.clear();
-								c.println("You defeat " + enemyName + winMessage);
-								alive = false; //set alive to false to exit main loop
-								win = true; //indicate that the player survived
-								fighting = false; //set fighting to false to exit combat loop
-								break; //break out of combat loop
-							}
-						} else { //triggers if player's health reaches 0
-							if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
-							Thread.sleep(500);
-							c.clear();
-							c.println(enemyName + " kills you.");
-							alive = false; //set alive to false to exit main loop
-							fighting = false; //set fighting to false to exit combat loop
-							break; //break out of combat loop
-						}
-					} break; //break out of main loop
+					s(1800);
+					//call combat method
+					yamiCombat(5, 300000, 90, 30, 45, 5000, 320000, 80, 10, 20, 6000, "Dragon", " and take your rightful place as the legendary hero.");
+					break; //break out of main loop
 				} else if (decision.equalsIgnoreCase("light")) { //escape cave
-					if (debug == true) {System.out.println("\nCAVE_MOUTH");} else {}
+					if (debug) {System.out.println("\nCAVE_MOUTH");} 
 					c.clear();
 					c.println("You head towards the light and come to the mouth of the cave.");
-					Thread.sleep(800);
+					s(800);
 					c.println("Soon after you exit, rocks fall and close the entrance behind you.");
-					Thread.sleep(700);
-				} else { //kill the player if they input an invalid answer
-					c.clear();
-					c.println("You spontaneously combust and die.");
-					alive = false; 
-					break; 
-				}
+					s(700);
+				} else {killPlayer(); break;}
 				c.println("\nYou press on after leaving the cave.");
-				Thread.sleep(900);
+				s(900);
 				c.println("Ahead, there is a fork in the path.");
-				Thread.sleep(650);
+				s(650);
 				c.println();
 				c.print("Take the [left] path or the [right] path? ");
 				decision = c.readString(); 
 				if (decision.equalsIgnoreCase("left")) { //risky path
-					if (debug == true) {System.out.println("\nLEFT_PATH_HEAD");} else {}
+					if (debug) {System.out.println("\nLEFT_PATH_HEAD");} 
 					c.clear();
 					c.println("As you approach the left path, you see a faded sign.");
-					Thread.sleep(850);
+					s(850);
 					c.println("The sign appears to be a skull and crossbones.");
 					c.println();
-					Thread.sleep(650);
+					s(650);
 					c.print("Take the path anyway? [yes/no] ");
 					decision = c.readString(); //read input
 					if (decision.equalsIgnoreCase("yes")) { //risk death
-						int pass = (int)(Math.random() * 10) + 1; //random number from 1 to 10
+						int pass = random(1, 10);
 						if (pass >= 1 && pass <= 5) { //50% chance of triggering
 							c.clear();
-							Thread.sleep(1200);
+							s(1200);
 							c.println("You fall into a deep hole, breaking your legs.");
-							Thread.sleep(1500);
+							s(1500);
 							c.println("Unable to escape, you die of starvation.");
-							alive = false; 
+							yamiLose();
 							break; 
-						} else {} //continue successfully
+						} //continue successfully
 					} else if (decision.equalsIgnoreCase("no")) { //take the safe path
 						c.clear();
 						c.println("You take the right path instead.");
-					} else { //kill the player if they input an invalid answer
-						c.clear();
-						c.println("You spontaneously combust and die.");
-						alive = false; 
-						break; 
-					}
+					} else {killPlayer(); break;}
 				} else if (decision.equalsIgnoreCase("right")) {} //take the safe path
-				if (debug == true) {System.out.println("\nOPEN_FIELD_POND");} else {}
+				if (debug) {System.out.println("\nOPEN_FIELD_POND");} 
 				c.clear();
 				c.println("After a short walk, you arrive in an open field.");
-				Thread.sleep(800);
+				s(800);
 				c.println("You see a small pond ahead, thirsty, you approach it.");
 				c.println();
-				Thread.sleep(650);
+				s(650);
 				c.print("Drink the water? [yes/no] "); //risk death for thirst
 				decision = c.readString();
-				if (decision.equalsIgnoreCase("yes")) {  //die of cholera
+				if (decision.equalsIgnoreCase("yes")) { //die of cholera
 					c.clear();
-					Thread.sleep(1000);
+					s(1000);
 					c.println("You drink the water and become infected with Cholera.");
-					Thread.sleep(1500);
+					s(1500);
 					c.println("Over the next few days, you slowly die of dehydration.");
-					alive = false; 
+					yamiLose();
 					break; 
 				} else if (decision.equalsIgnoreCase("no")) { //don't drink the water
 					c.clear();
 					c.println("You decide against drinking the water, as it may not be safe.");
-				} else { //kill the player if they input an invalid answer
-					c.clear();
-					c.println("You spontaneously combust and die.");
-					alive = false; 
-					break; 
-				}
-				if (debug == true) {System.out.println("\nOPEN_FIELD_JUNCTION");} else {}
+				} else {killPlayer(); break;}
+				if (debug) {System.out.println("\nOPEN_FIELD_JUNCTION");} 
 				c.println();
-				Thread.sleep(800);
+				s(800);
 				c.println("In the distance to the north, you see a blinking light alike to a cellular tower.");
-				Thread.sleep(750);
+				s(750);
 				c.println("You also hear footsteps to the west.");
-				Thread.sleep(900);
+				s(900);
 				c.println("\nTo the east you can see smoke.");
 				c.println();
-				Thread.sleep(650);
+				s(650);
 				c.print("Head [north], [east], [west], or [wait]? ");
 				decision = c.readString(); //read input
 				if (decision.equalsIgnoreCase("north")) { //camp site path
-					if (debug == true) {System.out.println("\nNORTHERN_TRAIL");} else {}
+					if (debug) {System.out.println("\nNORTHERN_TRAIL");} 
 					c.clear();
 					c.println("You head north and find a lightly used trail.");
-					Thread.sleep(900);
+					s(900);
 					c.println("Along the trail you find a wild blueberry bush.");
 					c.println();
-					Thread.sleep(650);
+					s(650);
 					c.print("Eat the berries? [yes/no] ");
 					decision = c.readString(); //read input
 					if (decision.equalsIgnoreCase("yes")) { //survive
 						c.clear();
 						c.println("You eat some berries.");
-						Thread.sleep(700);
+						s(700);
 						c.println("Your stomach stops aching and you can think more clearly.");
-						Thread.sleep(700);
+						s(700);
 						c.println("The juicy berries also quench your thirst.");
 					} else if (decision.equalsIgnoreCase("no")) { //most likely die
 						c.clear();
 						c.println("You decide against eating the berries.");
-						Thread.sleep(800);
+						s(800);
 						c.println("You press on to the north, thoughts clouded by hunger.");
-						Thread.sleep(1200);
-						int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
+						s(1200);
+						int pass = random(1, 10);
 						if (pass >= 1 && pass <= 7) { //70% chance of triggering
 							c.clear();
 							c.println("You suddenly black out from hunger.");
 							c.println();
-							Thread.sleep(1500);
+							s(1500);
 							c.println("You die of starvation.");
-							alive = false; 
+							yamiLose();
 							break; 
-						} else {} //continue successfully
-					} else { //kill the player if they input an invalid answer
-						c.clear();
-						c.println("You spontaneously combust and die.");
-						alive = false; 
-						break; 
-					}
-					if (debug == true) {System.out.println("\nCAMP_SITE_CLEARING");} else {}
+						}  //continue successfully
+					} else {killPlayer(); break;}
+					if (debug) {System.out.println("\nCAMP_SITE_CLEARING");} 
 					c.println();
-					Thread.sleep(1000);
+					s(1000);
 					c.println("You reach a small clearing in the forest.");
-					Thread.sleep(900);
+					s(900);
 					c.println("You realize you have walked on to an occupied camp site.");
-					Thread.sleep(1200);
+					s(1200);
 					c.println("The campers feed and shelter you before they take you back to civilization.");
-					alive = false; //in this case alive is used even though you didn't die
-					win = true; //indicates that setting alive to false is a win and not a loss
+					yamiWin();
 					break; 
 				} else if (decision.equalsIgnoreCase("west")) { //bigfoot / rescue chopper path
-					if (debug == true) {System.out.println("\nWEST_TRAIL_HIKER");} else {}
+					if (debug) {System.out.println("\nWEST_TRAIL_HIKER");} 
 					c.clear();
 					c.println("You head to the west, in the distance you see an upright figure hiking through the forest.");
-					Thread.sleep(1000);
+					s(1000);
 					c.println("Your instinct says it's an animal but your reason says it's human.");
 					c.println();
-					Thread.sleep(650);
+					s(650);
 					c.print("Approach the hiker? [yes/no] ");
 					decision = c.readString(); //read input
 					if (decision.equalsIgnoreCase("yes")) { //killed by bigfoot
 						c.clear();
 						c.println("As you approach the hiker, you realize it is tall and covered in fur.");
-						Thread.sleep(1000);
+						s(1000);
 						c.println("The Sasquatch sees you and charges, striking you with a powerful blow.");
-						Thread.sleep(1200);
+						s(1200);
 						c.println("Everything fades to black.");
-						Thread.sleep(1500);
+						s(1500);
 						c.println("You never wake up again.");
-						alive = false; 
+						yamiLose();
 						break; 
 					} else if (decision.equalsIgnoreCase("no")) { //bigfoot / rescue chopper path
-						if (debug == true) {System.out.println("\nWEST_TRAIL_PHONE");} else {}
+						if (debug) {System.out.println("\nWEST_TRAIL_PHONE");} 
 						c.clear();
 						c.println("You decide to head away from the figure.");
-						Thread.sleep(900);
+						s(900);
 						c.println("\nSomething shiny catches your eye!");
 						c.println();
-						Thread.sleep(650);
+						s(650);
 						c.print("Investigate the object? [yes/no] ");
 						decision = c.readString(); //read input
 						if (decision.equalsIgnoreCase("yes")) {
 							c.clear();
 							c.println("You find a cell phone, the battery still has some charge in it.");
-							Thread.sleep(800);
+							s(800);
 							c.println("You call 911 and head back to the field.");
-							Thread.sleep(1000);
+							s(1000);
 							c.println("\nSoon later, a rescue chopper picks you up.");
-							alive = false; //alive is used to end the game
-							win = true; //win indicates that the game ended in survival and not death
+							yamiWin();
 							break; 
 						} else if (decision.equalsIgnoreCase("no")) {
-							if (debug == true) {System.out.println("\nSHRINE");} else {}
+							if (debug) {System.out.println("\nSHRINE");} 
 							c.clear();
 							c.println("You walk a little further and discover a shrine.");
-							Thread.sleep(800);
+							s(800);
 							c.println("There is a sword set in stone.");
-							Thread.sleep(1200);
+							s(1200);
 							c.println("Bigfoot is looming behind you.");
 							c.println();
-							Thread.sleep(650);
+							s(650);
 							c.print("Do you [fight] or [flee]? ");
 							decision = c.readString(); //read input
 							if (decision.equalsIgnoreCase("fight")) {
 								c.clear();
 								c.println("You draw the sword.\n");
-								Thread.sleep(1800);
-								
-								// yami basic combat engine
-								// @author Quinlan McNellen
-								// version 2.1
-								
-								//uncomment the next line if using the combat engine outside of yami
-								//boolean debug = false;
-								if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
-								//define environment variables for combat engine
-								boolean fighting = true;
-								boolean defend = false;
-								int criticalMultiplier = 2;
-								//player variables
-								int playerHealth = 100;
-								int playerHitRatio = 80;
-								int playerBlockRatio = 80;
-								int playerCritRatio = 12;
-								int playerDamage = 10;
-								//enemy variables
-								int enemyHealth = 150;
-								int enemyHitRatio = 65;
-								int enemyBlockRatio = 15;
-								int enemyCritRatio = 8;
-								int enemyDamage = 5;
-								//configurable strings
-								String enemyName = "Bigfoot";
-								String winMessage = " and reach a small town after a short walk.";
-								
-								if (debug == true) {System.out.println("\nToday you will be fighting " + enemyName);} else {}
-								
-								while (fighting == true) { //begin combat loop
-									if (playerHealth > 0) { //check player health
-										if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HP");} else {}
-										if (enemyHealth > 0) { //check enemy health
-											if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} else {}
-											c.clear();
-											c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
-											c.print("[Attack] or [defend]? ");
-											if (debug == true) {System.out.println("\nWaiting for input...");} else {}
-											decision = c.readString(); //read input
-											if (decision.equalsIgnoreCase("attack")) { //attack enemy
-												if (debug == true) {System.out.println("\nPLAYER_ATTACK");} else {}
-												c.clear();
-												Thread.sleep(700);
-												c.println("You attack " + enemyName + "!");
-												int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-												if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} else {}
-												if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
-													int block = (int)(Math.random() * 100) + 1;
-													if (debug == true) {System.out.println("\n" + block + " ENEMY_BLOCK_CHANCE");} else {}
-													if (block >= 1 && block <= enemyBlockRatio) {
-														if (debug == true) {System.out.println("\nENEMY_BLOCK");} else {}
-														c.println();
-														Thread.sleep(800);
-														c.println("Your attack is blocked!");
-														Thread.sleep(1000);
-													} else {
-														if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
-														c.println();
-														int crit = (int)(Math.random() * 100) + 1;
-														if (debug == true) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} else {}
-														Thread.sleep(800);
-														c.println("Your attack hits " + enemyName + "!");
-														Thread.sleep(200);
-														if (crit >= 1 && crit <= playerCritRatio) {
-															c.println("\nA critical hit!");
-															if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-															enemyHealth = enemyHealth - (playerDamage * criticalMultiplier);
-															Thread.sleep(200);
-															c.println("\n" + (playerDamage * criticalMultiplier) + " DMG");
-															if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-														} else {
-															enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
-															Thread.sleep(200);
-															c.println("\n" + playerDamage + " DMG");
-															if (debug == true) {System.out.println("\n" + playerDamage + " DMG");} else {}
-														}
-														Thread.sleep(600);
-														defend = false; //indicate that the player is not defending
-													}
-												} else { //player attack misses
-													if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
-													c.println();
-													Thread.sleep(800);
-													c.println("Your attack misses " + enemyName + "!");
-													Thread.sleep(1000);
-													defend = false; //indicate that the player is not defending
-												}
-											} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
-												if (debug == true) {System.out.println("\nPLAYER_DEFEND");} else {}
-												c.clear();
-												Thread.sleep(700);
-												c.println("You stand in defense.");
-												Thread.sleep(1000);
-												defend = true; //indicate that the player is defending
-											} else { //kill the player if they input an invalid answer
-												c.clear();
-												c.println("You spontaneously combust and die.");
-												alive = false; 
-												break; 
-											}
-											if (enemyHealth > 0) {
-												if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-												int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-												if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
-												if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-													int block = (int)(Math.random() * 100) + 1;
-													if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
-													if (block >= 1 && block <= playerBlockRatio && defend == true) {
-														if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-														c.println();
-														Thread.sleep(800);
-														c.println("You block the attack!");
-														Thread.sleep(1000);
-													} else {
-														if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
-														c.println();
-														int crit = (int)(Math.random() * 100) + 1;
-														if (debug == true) {System.out.println("\n" + crit + " ENEMY_CRIT_CHANCE");} else {}
-														Thread.sleep(800);
-														c.println(enemyName + "'s attack strikes you!");
-														Thread.sleep(200);
-														if (crit >= 1 && crit <= enemyCritRatio) {
-															c.println("\nA critical hit!");
-															if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-															playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
-															Thread.sleep(200);
-															c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-															if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-														} else {
-															playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
-															Thread.sleep(200);
-															c.println("\n" + enemyDamage + " DMG");
-															if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
-														}
-														Thread.sleep(600);
-													}
-												} else { //enemy attack misses
-													if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
-													c.println();
-													Thread.sleep(800);
-													c.println("The attack misses!");
-													Thread.sleep(1000);
-												}
-											}else {}
-										} else { //triggers when enemy health reaches 0
-											if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
-											Thread.sleep(500);
-											c.clear();
-											c.println("You defeat " + enemyName + winMessage);
-											alive = false; //set alive to false to exit main loop
-											win = true; //indicate that the player survived
-											fighting = false; //set fighting to false to exit combat loop
-											break; //break out of combat loop
-										}
-									} else { //triggers if player's health reaches 0
-										if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
-										Thread.sleep(500);
-										c.clear();
-										c.println(enemyName + " kills you.");
-										alive = false; //set alive to false to exit main loop
-										fighting = false; //set fighting to false to exit combat loop
-										break; //break out of combat loop
-									}
-								} break; //break out of main loop
+								s(1800);
+								//call combat method
+								yamiCombat(2, 100, 80, 80, 12, 10, 150, 65, 15, 8, 5, "Bigfoot", " and reach a small town after a short walk.");
+								break; //break out of main loop
 							} else if (decision.equalsIgnoreCase("flee")) { //player chooses to flee
-								int pass = (int)(Math.random() * 10) + 1; //generate a random number from 1 to 10
+								int pass = random(1, 10);
 								if (pass >= 1 && pass <= 5) { //50% chance of triggering
 									c.clear();
-									Thread.sleep(1400);
+									s(1400);
 									c.println("Bigfoot catches up and strikes you down.");
-									alive = false; 
+									yamiLose();
 									break; 
 								} else { //continue successfully
-									if (debug == true) {System.out.println("\nSMALL_TOWN");} else {}
+									if (debug) {System.out.println("\nSMALL_TOWN");} 
 									c.clear();
-									Thread.sleep(1000);
+									s(1000);
 									c.println("You run without looking back and reach a small town.");
-									alive = false; //set alive to false to end the game
-									win = true; //indicate that the player survived
+									yamiWin();
 									break; 
 								}
-							} else { //kill the player if they input an invalid answer
-								c.clear();
-								c.println("You spontaneously combust and die.");
-								alive = false; 
-								break; 
-							}
-						} else { //kill the player if they input an invalid answer
-							c.clear();
-							c.println("You spontaneously combust and die.");
-							alive = false; 
-							break; 
-						}
-					} else { //kill the player if they input an invalid answer
-						c.clear();
-						c.println("You spontaneously combust and die.");
-						alive = false; 
-						break; 
-					}
+							} else {killPlayer(); break;}
+						} else {killPlayer(); break;}
+					} else {killPlayer(); break;}
 				} else if (decision.equalsIgnoreCase("wait")) { //death
 					c.clear();
 					c.println("You wait and eventually drift to sleep.");
-					Thread.sleep(2000);
-					c.println();
-					c.println("You never wake up again.");
-					alive = false; 
+					s(2000);
+					c.println("\nYou never wake up again.");
+					yamiLose();
 					break; 
-				} else if (decision.equalsIgnoreCase("east")) { 
+				} else if (decision.equalsIgnoreCase("east")) { //ambushed
 					c.clear();
 					c.println("You head to the east and find a seemingly deserted camp.");
-					Thread.sleep(800);
+					s(800);
 					c.println("\nYou pick up a shiny object that catches your eye, it's a dagger.");
-					Thread.sleep(1000);
+					s(1000);
 					c.println("\nSuddenly you are ambushed!");
-					Thread.sleep(1500);
-					
-					// yami basic combat engine
-					// @author Quinlan McNellen
-					// version 2.1
-					
-					//uncomment the next line if using the combat engine outside of yami
-					//boolean debug = false;
-					if (debug == true) {System.out.println("\nyami basic combat engine version 2.1\n\nCombat start!");} else {}
-					//define environment variables for combat engine
-					boolean fighting = true;
-					boolean defend = false;
-					int criticalMultiplier = 2;
-					//player variables
-					int playerHealth = 100;
-					int playerHitRatio = 70;
-					int playerBlockRatio = 25;
-					int playerCritRatio = 20;
-					int playerDamage = 8;
-					//enemy variables
-					int enemyHealth = 120;
-					int enemyHitRatio = 95;
-					int enemyBlockRatio = 15;
-					int enemyCritRatio = 10;
-					int enemyDamage = 4;
-					//configurable strings
-					String enemyName = "Ambusher";
-					String winMessage = " and reach a village after an hour of walking.";
-					
-					if (debug == true) {System.out.println("\nToday you will be fighting " + enemyName);} else {}
-					
-					while (fighting == true) { //begin combat loop
-						if (playerHealth > 0) { //check player health
-							if (debug == true) {System.out.println("\n" + playerHealth + " PLAYER_HP");} else {}
-							if (enemyHealth > 0) { //check enemy health
-								if (debug == true) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} else {}
-								c.clear();
-								c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
-								c.print("[Attack] or [defend]? ");
-								if (debug == true) {System.out.println("\nWaiting for input...");} else {}
-								decision = c.readString(); //read input
-								if (decision.equalsIgnoreCase("attack")) { //attack enemy
-									if (debug == true) {System.out.println("\nPLAYER_ATTACK");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println("You attack " + enemyName + "!");
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-									if (debug == true) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} else {}
-									if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
-										int block = (int)(Math.random() * 100) + 1;
-										if (debug == true) {System.out.println("\n" + block + " ENEMY_BLOCK_CHANCE");} else {}
-										if (block >= 1 && block <= enemyBlockRatio) {
-											if (debug == true) {System.out.println("\nENEMY_BLOCK");} else {}
-											c.println();
-											Thread.sleep(800);
-											c.println("Your attack is blocked!");
-											Thread.sleep(1000);
-										} else {
-											if (debug == true) {System.out.println("\nATTACK_HIT");} else {}
-											c.println();
-											int crit = (int)(Math.random() * 100) + 1;
-											if (debug == true) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} else {}
-											Thread.sleep(800);
-											c.println("Your attack hits " + enemyName + "!");
-											Thread.sleep(200);
-											if (crit >= 1 && crit <= playerCritRatio) {
-												c.println("\nA critical hit!");
-												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-												enemyHealth = enemyHealth - (playerDamage * criticalMultiplier);
-												Thread.sleep(200);
-												c.println("\n" + (playerDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-											} else {
-												enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
-												Thread.sleep(200);
-												c.println("\n" + playerDamage + " DMG");
-												if (debug == true) {System.out.println("\n" + playerDamage + " DMG");} else {}
-											}
-											Thread.sleep(600);
-											defend = false; //indicate that the player is not defending
-										}
-									} else { //player attack misses
-										if (debug == true) {System.out.println("\nATTACK_MISS");} else {}
-										c.println();
-										Thread.sleep(800);
-										c.println("Your attack misses " + enemyName + "!");
-										Thread.sleep(1000);
-										defend = false; //indicate that the player is not defending
-									}
-								} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
-									if (debug == true) {System.out.println("\nPLAYER_DEFEND");} else {}
-									c.clear();
-									Thread.sleep(700);
-									c.println("You stand in defense.");
-									Thread.sleep(1000);
-									defend = true; //indicate that the player is defending
-								} else { //kill the player if they input an invalid answer
-									c.clear();
-									c.println("You spontaneously combust and die.");
-									alive = false; 
-									break; 
-								}
-								if (enemyHealth > 0) {
-									if (debug == true) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} else {}
-									int hit = (int)(Math.random() * 100) + 1; //generate a random number from 1 to 100
-									if (debug == true) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} else {}
-									if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
-										int block = (int)(Math.random() * 100) + 1;
-										if (debug == true) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} else {}
-										if (block >= 1 && block <= playerBlockRatio && defend == true) {
-											if (debug == true) {System.out.println("\nPLAYER_BLOCK");} else {}
-											c.println();
-											Thread.sleep(800);
-											c.println("You block the attack!");
-											Thread.sleep(1000);
-										} else {
-											if (debug == true) {System.out.println("\nENEMY_ATTACK_HIT");} else {}
-											c.println();
-											int crit = (int)(Math.random() * 100) + 1;
-											if (debug == true) {System.out.println("\n" + crit + " ENEMY_CRIT_CHANCE");} else {}
-											Thread.sleep(800);
-											c.println(enemyName + "'s attack strikes you!");
-											Thread.sleep(200);
-											if (crit >= 1 && crit <= enemyCritRatio) {
-												c.println("\nA critical hit!");
-												if (debug == true) {System.out.println("\nCRITICAL_HIT");} else {}
-												playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
-												Thread.sleep(200);
-												c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
-												if (debug == true) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} else {}
-											} else {
-												playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
-												Thread.sleep(200);
-												c.println("\n" + enemyDamage + " DMG");
-												if (debug == true) {System.out.println("\n" + enemyDamage + " DMG");} else {}
-											}
-											Thread.sleep(600);
-										}
-									} else { //enemy attack misses
-										if (debug == true) {System.out.println("\nENEMY_ATTACK_MISS");} else {}
-										c.println();
-										Thread.sleep(800);
-										c.println("The attack misses!");
-										Thread.sleep(1000);
-									}
-								}else {}
-							} else { //triggers when enemy health reaches 0
-								if (debug == true) {System.out.println("\nENEMY_DEFEATED");} else {}
-								Thread.sleep(500);
-								c.clear();
-								c.println("You defeat " + enemyName + winMessage);
-								alive = false; //set alive to false to exit main loop
-								win = true; //indicate that the player survived
-								fighting = false; //set fighting to false to exit combat loop
-								break; //break out of combat loop
-							}
-						} else { //triggers if player's health reaches 0
-							if (debug == true) {System.out.println("\nPLAYER_DEFEATED");} else {}
-							Thread.sleep(500);
-							c.clear();
-							c.println(enemyName + " kills you.");
-							alive = false; //set alive to false to exit main loop
-							fighting = false; //set fighting to false to exit combat loop
-							break; //break out of combat loop
-						}
-					} break; //break out of main loop
-				} else { //kill the player if they input an invalid answer
-					c.clear();
-					c.println("You spontaneously combust and die.");
-					alive = false; 
-					break; 
-				}
+					s(1500);
+					//call combat method
+					yamiCombat(2, 100, 70, 25, 20, 8, 120, 95, 15, 10, 4, "Ambusher", " and reach a village after an hour of walking.");
+					break; //break out of main loop
+				} else {killPlayer(); break;}
 			} if (win == false) { //ended game via death
-				if (debug == true) {System.out.println("\nGAME_LOST");} else {}
-				c.println();
-				Thread.sleep(800);
-				c.println("Game Over");
+				if (debug) {System.out.println("\nGAME_LOST");} 
+				s(800);
+				c.println("\nGame Over");
 			} else if (win == true) { //ended game via survival
-				if (debug == true) {System.out.println("\nGAME_WON");} else {}
-				c.println();
-				Thread.sleep(800);
-				c.println("You win!");
-			} else {} //win is always true or false
+				if (debug) {System.out.println("\nGAME_WON");} 
+				s(800);
+				c.println("\nYou win!");
+			}  //win is always true or false
 			c.println();
 			c.print("Play again? [yes/no] ");
 			decision = c.readString();
@@ -816,25 +286,187 @@ public class Main {
 				c.clear();
 			}
 			else if (decision.equalsIgnoreCase("no")) {
-				Thread.sleep(1000);
+				s(1000);
 				c.println("Thank you for playing yami");
 				playing = false;
 				break;
 			} else {
 				c.clear();
-				Thread.sleep(600);
+				s(600);
 				c.println("You are suddenly resurrected!");
-				Thread.sleep(1000);
+				s(1000);
 				c.println("\nThen you spontaneously combust and die again.");
-				Thread.sleep(1800);
+				s(1800);
 				c.println("\nSeriously");
-				Thread.sleep(900);
+				s(900);
 				c.println("\nYou died at the game over screen");
-				Thread.sleep(1200);
+				s(1200);
 				c.println("\ngit gud and launch the gaem agin skrub");
 				playing = false;
 				break;
 			}
-		} if (debug == true) {System.out.println("\nEnd of program");} else {} //end of program
+		} if (debug) {System.out.println("\nEnd of program");}  //end of program
+	}
+	public static void yamiCombat(int criticalMultiplier, int playerHealth, int playerHitRatio, int playerBlockRatio, int playerCritRatio, int playerDamage, int enemyHealth, int enemyHitRatio, int enemyBlockRatio, int enemyCritRatio, int enemyDamage, String enemyName, String winMessage) {
+		// yami basic combat engine
+		// @author Quinlan McNellen
+		// version 2.3
+		
+		if (debug) {System.out.println("\nyami basic combat engine version 2.3\n\nCombat start!");} 
+		//define environment variables for combat engine
+		boolean fighting = true;
+		boolean defend = false;
+				
+		if (debug) {System.out.println("\nToday you will be fighting " + enemyName);} 
+		
+		while (fighting) { //begin combat loop
+			if (playerHealth > 0) { //check player health
+				if (debug) {System.out.println("\n" + playerHealth + " PLAYER_HP");} 
+				if (enemyHealth > 0) { //check enemy health
+					if (debug) {System.out.println("\n" + enemyHealth + " ENEMY_HP");} 
+					c.clear();
+					c.println("Player: " + playerHealth + "HP" + "     " + enemyName + ": " + enemyHealth + "HP"); //print player and enemy health
+					c.print("[Attack] or [defend]? ");
+					if (debug) {System.out.println("\nWaiting for input...");} 
+					decision = c.readString(); //read input
+					if (decision.equalsIgnoreCase("attack")) { //attack enemy
+						if (debug) {System.out.println("\nPLAYER_ATTACK");} 
+						c.clear();
+						s(700);
+						c.println("You attack " + enemyName + "!");
+						int hit = random(1, 100);
+						if (debug) {System.out.println("\n" + hit + " PLAYER_ATTACK_CHANCE");} 
+						if (hit >= 1 && hit <= playerHitRatio) { //calculate hit
+							int block = random(1, 100);
+							if (debug) {System.out.println("\n" + block + " ENEMY_BLOCK_CHANCE");} 
+							if (block >= 1 && block <= enemyBlockRatio) {
+								if (debug) {System.out.println("\nENEMY_BLOCK");} 
+								s(800);
+								c.println("\nYour attack is blocked!");
+								s(1000);
+							} else {
+								if (debug) {System.out.println("\nATTACK_HIT");} 
+								int crit = random(1, 100);
+								if (debug) {System.out.println("\n" + crit + " PLAYER_CRIT_CHANCE");} 
+								s(800);
+								c.println("\nYour attack hits " + enemyName + "!");
+								s(200);
+								if (crit >= 1 && crit <= playerCritRatio) {
+									c.println("\nA critical hit!");
+									if (debug) {System.out.println("\nCRITICAL_HIT");} 
+									enemyHealth = enemyHealth - (playerDamage * criticalMultiplier);
+									s(200);
+									c.println("\n" + (playerDamage * criticalMultiplier) + " DMG");
+									if (debug) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} 
+								} else {
+									enemyHealth = enemyHealth - playerDamage; //decrease enemy's health by player's attack strength
+									s(200);
+									c.println("\n" + playerDamage + " DMG");
+									if (debug) {System.out.println("\n" + playerDamage + " DMG");} 
+								}
+								s(600);
+								defend = false; //indicate that the player is not defending
+							}
+						} else { //player attack misses
+							if (debug) {System.out.println("\nATTACK_MISS");} 
+							s(800);
+							c.println("\nYour attack misses " + enemyName + "!");
+							s(1000);
+							defend = false; //indicate that the player is not defending
+						}
+					} else if (decision.equalsIgnoreCase("defend")) { //defend from the enemy's attack
+						if (debug) {System.out.println("\nPLAYER_DEFEND");} 
+						c.clear();
+						s(700);
+						c.println("You stand in defense.");
+						s(1000);
+						defend = true; //indicate that the player is defending
+					} else {killPlayer(); break;}
+					if (enemyHealth > 0) {
+						if (debug) {System.out.println("\nCOMBAT_ENEMY_ATTACK");} 
+						c.println("\n" + enemyName + " attacks!");
+						int hit = random(1, 100);
+						if (debug) {System.out.println("\n" + hit + " ENEMY_ATTACK_CHANCE");} 
+						if (hit >= 1 && hit <= enemyHitRatio) { //calculate hit
+							int block = random(1, 100);
+							if (debug) {System.out.println("\n" + block + " PLAYER_BLOCK_CHANCE");} 
+							if (block >= 1 && block <= playerBlockRatio && defend == true) {
+								if (debug) {System.out.println("\nPLAYER_BLOCK");} 
+								s(800);
+								c.println("\nYou block the attack!");
+								s(1000);
+							} else {
+								if (debug) {System.out.println("\nENEMY_ATTACK_HIT");} 
+								int crit = random(1, 100);
+								if (debug) {System.out.println("\n" + crit + " ENEMY_CRIT_CHANCE");} 
+								s(800);
+								c.println("\n" + enemyName + "'s attack strikes you!");
+								s(200);
+								if (crit >= 1 && crit <= enemyCritRatio) {
+									c.println("\nA critical hit!");
+									if (debug) {System.out.println("\nCRITICAL_HIT");} 
+									playerHealth = playerHealth - (enemyDamage * criticalMultiplier);
+									s(200);
+									c.println("\n" + (enemyDamage * criticalMultiplier) + " DMG");
+									if (debug) {System.out.println("\n" + (playerDamage * criticalMultiplier) + " DMG");} 
+								} else {
+									playerHealth = playerHealth - enemyDamage; //decrease enemy's health by player's attack strength
+									s(200);
+									c.println("\n" + enemyDamage + " DMG");
+									if (debug) {System.out.println("\n" + enemyDamage + " DMG");} 
+								}
+								s(600);
+							}
+						} else { //enemy attack misses
+							if (debug) {System.out.println("\nENEMY_ATTACK_MISS");} 
+							s(800);
+							c.println("\nThe attack misses!");
+							s(1000);
+						}
+					}
+				} else { //triggers when enemy health reaches 0
+					if (debug) {System.out.println("\nENEMY_DEFEATED");} 
+					s(500);
+					c.clear();
+					c.println("You defeat " + enemyName + winMessage);
+					yamiWin();
+					fighting = false; //set fighting to false to exit combat loop
+					break; //break out of combat loop
+				}
+			} else { //triggers if player's health reaches 0
+				if (debug) {System.out.println("\nPLAYER_DEFEATED");} 
+				s(500);
+				c.clear();
+				c.println(enemyName + " kills you.");
+				yamiLose();
+				fighting = false; //set fighting to false to exit combat loop
+				break; //break out of combat loop
+			}
+		}
+	}
+	public static void killPlayer() { //instantly kills the player
+		c.clear();
+		c.println("You spontaneously combust and die.");
+		alive = false;
+	}
+	public static int random(int min, int max) { //generates a random number between specified numbers
+		int x = (max - min) + 1;
+		int random = (int)(Math.random() * x) + min; 
+		return random;
+	}
+	public static void s(int milliseconds) { //shortens sleep statements and localizes error handling
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	public static void yamiWin() { //sets variables for winning the game
+		alive = false;
+		win = true;
+	}
+	public static void yamiLose() { //sets variables for losing the game
+		alive = false;
+		win = false;
 	}
 }
