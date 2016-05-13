@@ -1,4 +1,4 @@
-package yami;
+package moe.thisis.yami;
 
 import hsa_new.*;
 
