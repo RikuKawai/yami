@@ -6,19 +6,31 @@ public class Main {
 
 	public static boolean alive = true;
 	public static boolean win = false;
-	public static boolean debug = true; //set this to true to print debug information the system console
+	public static boolean debug = false; //this setting is overridden by command line arguments
 	public static String decision;
 	
-	public static final String VERSION = "1.4.2"; //set version code
+	public static final String VERSION = "1.4.3"; //set version code
 	public static Console c = new Console(30,100,11,"yami " + VERSION); //create console
 	
+	/**
+	 * Yami Protoype
+	 * @author Quinlan McNellen
+	 * @version 1.4.3
+	 * @date 11/16/2016
+	 * @param args	true or false as first argument to set debug mode
+	 */
 	public static void main(String[] args) {
-		// TODO [optional] make combat even prettier
-		// yami prototype
-		// @author Quinlan McNellen
-		// version 1.4.2
-		// 2016/04/24
-
+		if (args.length>0) {
+			switch (args[0].toLowerCase()) {
+			case "false":
+				debug = false;
+				break;
+			case "true":
+				debug = true;
+				break;
+			}
+		}
+		
 		if (debug) {System.out.println("yami prototype version " + VERSION + "\n\nGame start!");}//lines like this print debug info when debug = true
 		
 		boolean playing = true;
@@ -307,12 +319,27 @@ public class Main {
 			}
 		} if (debug) {System.out.println("\nEnd of program");}  //end of program
 	}
+	/**
+	 * Yami Basic Combat Engine
+	 * @author Quinlan McNellen
+	 * @version 2.3.1
+	 * @date 11/16/2016
+	 * @param criticalMultiplier	Critical hit multiplier for the player
+	 * @param playerHealth			Health for the player
+	 * @param playerHitRatio		Hit chance for the player
+	 * @param playerBlockRatio		Block chance for the player
+	 * @param playerCritRatio		Critical hit chance for the player
+	 * @param playerDamage			Attack strength of the player
+	 * @param enemyHealth			Health for the enemy
+	 * @param enemyHitRatio			Hit chance for the enemy
+	 * @param enemyBlockRatio		Block chance for the enemy
+	 * @param enemyCritRatio		Critical hit chance for the enemy
+	 * @param enemyDamage			Attack strength of the enemy
+	 * @param enemyName				Name of the enemy
+	 * @param winMessage			Message to append to "You defeat enemyName"
+	 */
 	public static void yamiCombat(int criticalMultiplier, int playerHealth, int playerHitRatio, int playerBlockRatio, int playerCritRatio, int playerDamage, int enemyHealth, int enemyHitRatio, int enemyBlockRatio, int enemyCritRatio, int enemyDamage, String enemyName, String winMessage) {
-		// yami basic combat engine
-		// @author Quinlan McNellen
-		// version 2.3
-		
-		if (debug) {System.out.println("\nyami basic combat engine version 2.3\n\nCombat start!");} 
+		if (debug) {System.out.println("\nyami basic combat engine version 2.3.1\n\nCombat start!");} 
 		//define environment variables for combat engine
 		boolean fighting = true;
 		boolean defend = false;
@@ -444,28 +471,47 @@ public class Main {
 			}
 		}
 	}
-	public static void killPlayer() { //instantly kills the player
+	/**
+	 * Instantly kills the player
+	 */
+	public static void killPlayer() {
 		c.clear();
 		c.println("You spontaneously combust and die.");
 		alive = false;
 	}
-	public static int random(int min, int max) { //generates a random number between specified numbers
+	/**
+	 * Generate a random number between specified numbers
+	 * @param min	Minimum value
+	 * @param max	Maximum value
+	 * @return
+	 */
+	public static int random(int min, int max) {
 		int x = (max - min) + 1;
 		int random = (int)(Math.random() * x) + min; 
 		return random;
 	}
-	public static void s(int milliseconds) { //shortens sleep statements and localizes error handling
+	/**
+	 * Shortened sleep statement with localized error handling
+	 * @param milliseconds	Milliseconds to sleep
+	 */
+	public static void s(int milliseconds) {
 		try {
 			Thread.sleep(milliseconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	public static void yamiWin() { //sets variables for winning the game
+	/**
+	 * Set variables for winning the game
+	 */
+	public static void yamiWin() {
 		alive = false;
 		win = true;
 	}
-	public static void yamiLose() { //sets variables for losing the game
+	/**
+	 * Set variables for losing the game
+	 */
+	public static void yamiLose() {
 		alive = false;
 		win = false;
 	}
